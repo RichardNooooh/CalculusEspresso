@@ -25,4 +25,9 @@ public enum UnaryOperator
 	{
 		this.symbol = symbol;
 	}
+
+	public static String getAbbrev(UnaryOperator operator)
+	{
+		return operator.symbol;
+	}
 }
