@@ -1,0 +1,5 @@
+#User Information
+.idea/**/workspace.xml
+.idea/**/modules.xml
+*.iml
+out/
