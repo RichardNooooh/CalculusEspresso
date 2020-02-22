@@ -24,4 +24,10 @@ public enum ExpressionChar
 	{
 		return replacementChar;
 	}
+
+	@Override
+	public String toString()
+	{
+		return replacementChar + "";
+	}
 }

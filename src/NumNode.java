@@ -7,4 +7,10 @@ public class NumNode extends Node
 	{
 		val = value;
 	}
+
+	@Override
+	public String toString()
+	{
+		return val + "";
+	}
 }

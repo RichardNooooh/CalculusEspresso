@@ -6,4 +6,10 @@ public class BinaryNode extends Node
 	{
 		return operator;
 	}
+
+	@Override
+	public String toString()
+	{
+		return operator.toString();
+	}
 }

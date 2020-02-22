@@ -31,4 +31,10 @@ public enum UnaryOperator
 	{
 		return operator.symbol;
 	}
+
+	@Override
+	public String toString()
+	{
+		return symbol;
+	}
 }

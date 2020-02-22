@@ -6,4 +6,10 @@ public class CalculusNode extends Node
 	{
 		return operator;
 	}
+
+	@Override
+	public String toString()
+	{
+		return operator.toString();
+	}
 }

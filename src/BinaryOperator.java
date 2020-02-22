@@ -17,4 +17,10 @@ public enum BinaryOperator
 	{
 		return operator.symbol;
 	}
+
+	@Override
+	public String toString()
+	{
+		return symbol + "";
+	}
 }
