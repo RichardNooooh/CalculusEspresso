@@ -5,6 +5,13 @@ public enum ExpressionChar
 	NINE((char) 57),
 	DECIMAL((char) 46),
 
+	//Binary Operators
+	ADDITION('+'),
+	SUBTRACTION('-'),
+	MULTIPLICATION('*'),
+	DIVISION('/'),
+	EXPONENTIAL('^'),
+
 	//Unary 208-212
 	SQUARE_ROOT((char) 208),
 	LOGARITHM((char) 209),

@@ -1,19 +1,19 @@
 public enum BinaryOperator
 {
-	ADDITION('+'),
-	SUBTRACTION('-'),
-	MULTIPLICATION('*'),
-	DIVISION('/'),
-	EXPONENTIAL('^');
+	ADDITION(ExpressionChar.ADDITION),
+	SUBTRACTION(ExpressionChar.SUBTRACTION),
+	MULTIPLICATION(ExpressionChar.MULTIPLICATION),
+	DIVISION(ExpressionChar.DIVISION),
+	EXPONENTIAL(ExpressionChar.EXPONENTIAL);
 
-	private char symbol;
+	private ExpressionChar symbol;
 
-	BinaryOperator(char symbol)
+	BinaryOperator(ExpressionChar symbol)
 	{
 		this.symbol = symbol;
 	}
 
-	public static char getAbbrev(BinaryOperator operator)
+	public static ExpressionChar getAbbrev(BinaryOperator operator)
 	{
 		return operator.symbol;
 	}
