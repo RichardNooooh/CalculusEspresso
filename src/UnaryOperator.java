@@ -1,7 +1,7 @@
 public enum UnaryOperator
 {
 	//standard unary operators
-	SQUARE_ROOT("sqrt")
+	SQUARE_ROOT("sqrt", ExpressionChar.SQUARE_ROOT)
 			{
 				@Override
 				public String toString()
@@ -9,7 +9,7 @@ public enum UnaryOperator
 					return "SquareRoot";
 				}
 			},
-	LOGARITHM("log")
+	LOGARITHM("log", ExpressionChar.LOGARITHM)
 			{
 				@Override
 				public String toString()
@@ -20,8 +20,9 @@ public enum UnaryOperator
 	//TODO add root
 
 	private String symbol;
+	private ExpressionChar rc;
 
-	UnaryOperator(String symbol)
+	UnaryOperator(String symbol, ExpressionChar rc)
 	{
 		this.symbol = symbol;
 	}

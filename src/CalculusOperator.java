@@ -1,6 +1,6 @@
 public enum CalculusOperator
 {
-	DERIVATIVE("der")
+	DERIVATIVE("der", ExpressionChar.DERIVATIVE)
 			{
 				@Override
 				public String toString()
@@ -8,21 +8,23 @@ public enum CalculusOperator
 					return "Derivative";
 				}
 			},
-	INTEGRAL("int")
+	INTEGRAL("int", ExpressionChar.INTEGRAL)
 			{
 				@Override
 				public String toString()
 				{
-					return "Derivative";
+					return "Integral";
 				}
 			};
 	//TODO Add Gradient and other multivar operators
 
 	private String abbreviation;
+	private ExpressionChar rc;
 
-	CalculusOperator(String symbol)
+	CalculusOperator(String abbreviation, ExpressionChar rc)
 	{
-		this.abbreviation = symbol;
+		this.abbreviation = abbreviation;
+		this.rc = rc;
 	}
 
 	public static String getAbbrev(CalculusOperator operator)

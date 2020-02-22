@@ -37,7 +37,7 @@ public class ExpressionParser
 			try
 			{
 				expression = expression.substring(0, index) + abbrev + expression.substring(abbrev.length() + index + 1);
-			} catch (Exception e)
+			} catch (Exception e) //TODO make my own exception? that'll be interesting
 			{
 				System.out.println("Unary and Calculus Operators should not be at the end");
 			}
@@ -50,6 +50,7 @@ public class ExpressionParser
 	{
 		expression = preprocess(expression);
 		String currentNum = "";
+		boolean onNum = false;
 		char prevChar = 0;
 		char[] expressionArray = expression.toCharArray();
 
@@ -57,9 +58,17 @@ public class ExpressionParser
 		for (char c : expressionArray)
 		{
 			// 0 through 9 or '.'
-			if ((c >= 48 && c <= 57) || c == 46) //TODO substitute these numbers with enums
+			if ((c >= ExpressionChar.ZERO.ordinal() && c <= ExpressionChar.NINE.ordinal())
+					|| c == ExpressionChar.DECIMAL.ordinal()) //TODO substitute these numbers with enums
+			{
 				currentNum += c;
-			//TODO parse through rest of the characters
+				onNum = true;
+			}
+			else if (onNum)
+			{
+				onNum = false;
+
+			}
 		}
 	}
 
