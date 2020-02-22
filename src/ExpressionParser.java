@@ -58,15 +58,25 @@ public class ExpressionParser
 		for (char c : expressionArray)
 		{
 			// 0 through 9 or '.'
-			if ((c >= ExpressionChar.ZERO.ordinal() && c <= ExpressionChar.NINE.ordinal())
-					|| c == ExpressionChar.DECIMAL.ordinal()) //TODO substitute these numbers with enums
+			if ((c >= ExpressionChar.ZERO.getChar() && c <= ExpressionChar.NINE.getChar())
+					|| c == ExpressionChar.DECIMAL.getChar()) //TODO substitute these numbers with enums
 			{
 				currentNum += c;
 				onNum = true;
 			}
-			else if (onNum)
+			else //variables or symbols
 			{
-				onNum = false;
+				//add the number as a node
+				if (onNum)
+				{
+					onNum = false;
+					NumNode newNum = new NumNode(Double.parseDouble(currentNum));
+					currentNum = "";
+
+					tokens.add(newNum);
+				}
+				//see if 'c' is an operator
+
 
 			}
 		}

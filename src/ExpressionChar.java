@@ -19,4 +19,9 @@ public enum ExpressionChar
 	{
 		this.replacementChar = replacementChar;
 	}
+
+	public char getChar()
+	{
+		return replacementChar;
+	}
 }
