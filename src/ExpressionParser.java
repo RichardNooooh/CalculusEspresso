@@ -52,7 +52,6 @@ public class ExpressionParser
 		expression = preprocess(expression);
 		String currentNum = "";
 		boolean onNum = false;
-		char prevChar = 0;
 		char[] expressionArray = expression.toCharArray();
 
 		LinkedList<Node> tokens = new LinkedList<Node>();
