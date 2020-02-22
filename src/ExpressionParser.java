@@ -7,7 +7,8 @@ public class ExpressionParser
 {
 	public ExpressionParser(String expression)
 	{
-		//parse(expression);
+		LinkedList<Node> tokens = parse(expression);
+		System.out.println(tokens);
 		//createTree();
 	}
 
@@ -46,7 +47,7 @@ public class ExpressionParser
 		return expression;
 	}
 
-	private void parse(String expression)
+	private LinkedList<Node> parse(String expression)
 	{
 		expression = preprocess(expression);
 		String currentNum = "";
@@ -80,6 +81,14 @@ public class ExpressionParser
 
 			}
 		}
+		//TODO fix, because this is jank.
+		if (onNum)
+		{
+			NumNode newNum = new NumNode(Double.parseDouble(currentNum));
+
+			tokens.add(newNum);
+		}
+		return tokens;
 	}
 
 }
