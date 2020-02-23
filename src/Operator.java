@@ -1,14 +1,14 @@
 public enum Operator
 {
 	//Binary Operations
-	ADDITION("+", ExpressionChar.ADDITION),
-	SUBTRACTION("-", ExpressionChar.SUBTRACTION),
-	MULTIPLICATION("*", ExpressionChar.MULTIPLICATION),
-	DIVISION("/", ExpressionChar.DIVISION),
-	EXPONENTIAL("^", ExpressionChar.EXPONENTIAL),
+	ADDITION("+", ExpressionChar.ADDITION, OperationType.BINARY),
+	SUBTRACTION("-", ExpressionChar.SUBTRACTION, OperationType.BINARY),
+	MULTIPLICATION("*", ExpressionChar.MULTIPLICATION, OperationType.BINARY),
+	DIVISION("/", ExpressionChar.DIVISION, OperationType.BINARY),
+	EXPONENTIAL("^", ExpressionChar.EXPONENTIAL, OperationType.BINARY),
 
 	//Unary Operations
-	SQUARE_ROOT("sqrt", ExpressionChar.SQUARE_ROOT)
+	SQUARE_ROOT("sqrt", ExpressionChar.SQUARE_ROOT, OperationType.UNARY)
 	{
 		@Override
 		public String toString()
@@ -16,7 +16,7 @@ public enum Operator
 			return "SquareRoot";
 		}
 	},
-	LOGARITHM("log", ExpressionChar.LOGARITHM)
+	LOGARITHM("log", ExpressionChar.LOGARITHM, OperationType.UNARY)
 	{
 		@Override
 		public String toString()
@@ -26,7 +26,7 @@ public enum Operator
 	},
 
 	//Calculus Operations
-	DERIVATIVE("der", ExpressionChar.DERIVATIVE)
+	DERIVATIVE("der", ExpressionChar.DERIVATIVE, OperationType.CALCULUS)
 	{
 		@Override
 		public String toString()
@@ -34,7 +34,7 @@ public enum Operator
 			return "Derivative";
 		}
 	},
-	INTEGRAL("int", ExpressionChar.INTEGRAL)
+	INTEGRAL("int", ExpressionChar.INTEGRAL, OperationType.CALCULUS)
 	{
 		@Override
 		public String toString()
@@ -45,15 +45,27 @@ public enum Operator
 
 	private String abbrev;
 	private ExpressionChar chr;
-	Operator(String abbrev, ExpressionChar chr)
+	private OperationType type;
+	Operator(String abbrev, ExpressionChar chr, OperationType type)
 	{
 		this.abbrev = abbrev;
 		this.chr = chr;
+		this.type = type;
 	}
 
 	public String getAbbrev()
 	{
 		return abbrev;
+	}
+
+	public char getChar()
+	{
+		return chr.getChar();
+	}
+
+	public OperationType getType()
+	{
+		return type;
 	}
 
 	@Override
