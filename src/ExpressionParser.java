@@ -14,16 +14,9 @@ public class ExpressionParser
 
 	private String preprocess(String expression)
 	{
-		//TODO is there a way to simplify this with lambda expressions?
-		for (UnaryOperator bOperator : UnaryOperator.values())
+		for (Operator operator : Operator.values())
 		{
-			String abbrev = UnaryOperator.getAbbrev(bOperator);
-			expression = changeToAbbrev(expression, abbrev);
-		}
-
-		for (CalculusOperator cOperator : CalculusOperator.values())
-		{
-			String abbrev = CalculusOperator.getAbbrev(cOperator);
+			String abbrev = operator.getAbbrev();
 			expression = changeToAbbrev(expression, abbrev);
 		}
 
@@ -75,7 +68,6 @@ public class ExpressionParser
 
 					tokens.add(newNum);
 				}
-				//see if 'c' is an operator
 
 
 			}
