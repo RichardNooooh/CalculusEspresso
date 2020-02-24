@@ -1,4 +1,4 @@
-public class CalculusNode extends Node
+public class CalculusNode extends OperatorNode
 {
 	public CalculusNode(Operator bOperator)
 	{

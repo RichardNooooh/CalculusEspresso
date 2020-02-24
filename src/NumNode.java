@@ -1,4 +1,4 @@
-public class NumNode extends Node
+public class NumNode extends OperandNode
 {
 	//left and right nodes must be null
 	private double val;

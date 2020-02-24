@@ -1,4 +1,4 @@
-public class BinaryNode extends Node
+public class BinaryNode extends OperatorNode
 {
 	public BinaryNode(Operator bOperator)
 	{

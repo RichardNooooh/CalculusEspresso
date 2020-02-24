@@ -1,4 +1,4 @@
-public class VarNode extends Node
+public class VarNode extends OperandNode
 {
 	char variable;
 
