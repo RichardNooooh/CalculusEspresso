@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public enum Operator
 {
 	//Binary Operations
@@ -51,6 +53,17 @@ public enum Operator
 		this.abbrev = abbrev;
 		this.chr = chr;
 		this.type = type;
+	}
+
+	public static ArrayList<Operator> getMultiCharList()
+	{
+		ArrayList<Operator> result = new ArrayList<Operator>();
+		for (Operator op : values())
+		{
+			if (op.getType() != OperationType.BINARY)
+				result.add(op);
+		}
+		return result;
 	}
 
 	public String getAbbrev()
