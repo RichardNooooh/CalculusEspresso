@@ -1,5 +1,9 @@
 import java.util.ArrayList;
 
+/**
+ * An enum that stores the abbreviations and substitution character for all
+ * supported operations.
+ */
 public enum Operator
 {
 	//Binary Operations
@@ -55,6 +59,11 @@ public enum Operator
 		this.type = type;
 	}
 
+	/**
+	 * Return an ArrayList of all operators with multiple characters.
+	 * Namely the UnaryOperators like 'sqrt' and CalculusOperators like
+	 * 'der' or derivative.
+	 */
 	public static ArrayList<Operator> getMultiCharList()
 	{
 		ArrayList<Operator> result = new ArrayList<Operator>();
@@ -66,21 +75,36 @@ public enum Operator
 		return result;
 	}
 
+	/**
+	 * Return the representation "abbreviation" of each operator.
+	 * Like 'der' for derivative, 'sqrt' for square root, and etc.
+	 */
 	public String getAbbrev()
 	{
 		return abbrev;
 	}
 
+	/**
+	 * Return the substitution character for the operator.
+	 * Each substitution character is represented by the ExpressionChar
+	 * enum.
+	 */
 	public char getChar()
 	{
 		return chr.getChar();
 	}
 
+	/**
+	 * Returns the type of operation, like Unary or Binary
+	 */
 	public OperationType getType()
 	{
 		return type;
 	}
 
+	/**
+	 * Return the string representation of this enum.
+	 */
 	@Override
 	public String toString()
 	{
