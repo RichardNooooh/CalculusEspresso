@@ -1,3 +1,6 @@
+/**
+ * Stores the ASCII characters for all operations and important values
+ */
 public enum ExpressionChar
 {
 	//Standard Characters
@@ -27,11 +30,17 @@ public enum ExpressionChar
 		this.replacementChar = replacementChar;
 	}
 
+	/**
+	 * @return the replacement character of the enumeration
+	 */
 	public char getChar()
 	{
 		return replacementChar;
 	}
 
+	/**
+	 * @return the string representation of the replacement character
+	 */
 	@Override
 	public String toString()
 	{
