@@ -1,3 +1,6 @@
+/**
+ * Represents all variables in the expression tree
+ */
 public class VarNode extends OperandNode
 {
 	char variable;
