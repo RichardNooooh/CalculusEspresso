@@ -3,10 +3,13 @@
  */
 public enum ExpressionChar
 {
-	//Standard Characters
+	//Numeric Characters
 	ZERO((char) 48),
 	NINE((char) 57),
-	DECIMAL((char) 46);
+	DECIMAL((char) 46),
+
+	LEFT_PARENTHESIS((char) 40),
+	RIGHT_PARENTHESIS((char) 41);
 
 	private char replacementChar;
 	ExpressionChar(char replacementChar)

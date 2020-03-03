@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * An enum that stores the abbreviations and substitution character for all
@@ -78,15 +79,14 @@ public enum Operator
 	}
 
 	/**
-	 * @return an ArrayList of Characters of every character
+	 * @return a Character, Operator HashMap of all operators
 	 */
-	public static ArrayList<Character> getRawCharList()
+	public static HashMap<Character, Operator> getRawCharList()
 	{
-		ArrayList<Character> result = new ArrayList<>();
+		HashMap<Character, Operator> result = new HashMap<Character, Operator>();
 		for (Operator op : values())
-		{
-			result.add(op.chr);
-		}
+			result.put(op.chr, op);
+
 		return result;
 	}
 
