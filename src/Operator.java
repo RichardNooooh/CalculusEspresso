@@ -7,14 +7,14 @@ import java.util.ArrayList;
 public enum Operator
 {
 	//Binary Operations
-	ADDITION("+", ExpressionChar.ADDITION, OperationType.BINARY),
-	SUBTRACTION("-", ExpressionChar.SUBTRACTION, OperationType.BINARY),
-	MULTIPLICATION("*", ExpressionChar.MULTIPLICATION, OperationType.BINARY),
-	DIVISION("/", ExpressionChar.DIVISION, OperationType.BINARY),
-	EXPONENTIAL("^", ExpressionChar.EXPONENTIAL, OperationType.BINARY),
+	ADDITION("+", (char) 43, OperationType.BINARY, (byte) 1),
+	SUBTRACTION("-", (char) 45, OperationType.BINARY, (byte) 1),
+	MULTIPLICATION("*", (char) 42, OperationType.BINARY, (byte) 2),
+	DIVISION("/", (char) 47, OperationType.BINARY, (byte) 2),
+	EXPONENTIAL("^", (char) 94, OperationType.BINARY, (byte) 3),
 
 	//Unary Operations
-	SQUARE_ROOT("sqrt", ExpressionChar.SQUARE_ROOT, OperationType.UNARY)
+	SQUARE_ROOT("sqrt", (char) 208, OperationType.UNARY, (byte) 3) //TODO determine proper precedence for these operators
 	{
 		@Override
 		public String toString()
@@ -22,7 +22,7 @@ public enum Operator
 			return "SquareRoot";
 		}
 	},
-	LOGARITHM("log", ExpressionChar.LOGARITHM, OperationType.UNARY)
+	LOGARITHM("log", (char) 209, OperationType.UNARY, (byte) 4)
 	{
 		@Override
 		public String toString()
@@ -32,7 +32,7 @@ public enum Operator
 	},
 
 	//Calculus Operations
-	DERIVATIVE("der", ExpressionChar.DERIVATIVE, OperationType.CALCULUS)
+	DERIVATIVE("der", (char) 213, OperationType.CALCULUS, (byte) 5)
 	{
 		@Override
 		public String toString()
@@ -40,7 +40,7 @@ public enum Operator
 			return "Derivative";
 		}
 	},
-	INTEGRAL("int", ExpressionChar.INTEGRAL, OperationType.CALCULUS)
+	INTEGRAL("int", (char) 214, OperationType.CALCULUS, (byte) 5)
 	{
 		@Override
 		public String toString()
@@ -50,13 +50,15 @@ public enum Operator
 	};
 
 	private String abbrev;
-	private ExpressionChar chr;
+	private char chr;
 	private OperationType type;
-	Operator(String abbrev, ExpressionChar chr, OperationType type)
+	private byte precedence;
+	Operator(String abbrev, char chr, OperationType type, byte precedence)
 	{
 		this.abbrev = abbrev;
 		this.chr = chr;
 		this.type = type;
+		this.precedence = precedence;
 	}
 
 	/**
@@ -71,6 +73,19 @@ public enum Operator
 		{
 			if (op.getType() != OperationType.BINARY)
 				result.add(op);
+		}
+		return result;
+	}
+
+	/**
+	 * @return an ArrayList of Characters of every character
+	 */
+	public static ArrayList<Character> getRawCharList()
+	{
+		ArrayList<Character> result = new ArrayList<>();
+		for (Operator op : values())
+		{
+			result.add(op.chr);
 		}
 		return result;
 	}
@@ -91,7 +106,7 @@ public enum Operator
 	 */
 	public char getChar()
 	{
-		return chr.getChar();
+		return chr;
 	}
 
 	/**
@@ -102,12 +117,17 @@ public enum Operator
 		return type;
 	}
 
+	public int comparePrecedence(Operator other)
+	{
+		return this.precedence - other.precedence;
+	}
+
 	/**
 	 * Return the string representation of this enum.
 	 */
 	@Override
 	public String toString()
 	{
-		return chr.toString();
+		return chr + "";
 	}
 }
