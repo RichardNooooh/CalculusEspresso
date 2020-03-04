@@ -1,28 +1,15 @@
 /**
- * Stores the ASCII characters for all operations and important values
+ * Stores the ASCII characters for all important values
  */
 public enum ExpressionChar
 {
-	//Standard Characters
+	//Numeric Characters
 	ZERO((char) 48),
 	NINE((char) 57),
 	DECIMAL((char) 46),
 
-	//Binary Operators
-	ADDITION('+'),
-	SUBTRACTION('-'),
-	MULTIPLICATION('*'),
-	DIVISION('/'),
-	EXPONENTIAL('^'),
-
-	//Unary 208-212
-	SQUARE_ROOT((char) 208),
-	LOGARITHM((char) 209),
-
-	//Calculus 213-218
-	DERIVATIVE((char) 213),
-	INTEGRAL((char) 214);
-
+	LEFT_PARENTHESIS((char) 40),
+	RIGHT_PARENTHESIS((char) 41);
 
 	private char replacementChar;
 	ExpressionChar(char replacementChar)
