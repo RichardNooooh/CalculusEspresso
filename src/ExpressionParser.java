@@ -11,7 +11,7 @@ public class ExpressionParser
 	public ExpressionParser(String expression)
 	{
 		LinkedList<Node> tokens = parse(expression);
-		System.out.println(tokens);
+		ExpressionTree tree = new ExpressionTree(tokens);
 	}
 
 	/**
