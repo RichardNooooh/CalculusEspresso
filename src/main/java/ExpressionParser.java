@@ -1,17 +1,26 @@
-import java.util.*;
+package Main;
 
+import java.util.*;
+//TODO this class should be used by the ExpressionTree
 /*
  * Parses a raw expression into tokens
  */
 public class ExpressionParser
 {
+	LinkedList<Node> tokens;
+
 	/**
 	 * Constructs a new ExpressionParser
 	 */
 	public ExpressionParser(String expression)
 	{
 		LinkedList<Node> tokens = parse(expression);
-		ExpressionTree tree = new ExpressionTree(tokens);
+//		ExpressionTree tree = new ExpressionTree(tokens);
+	}
+
+	public LinkedList<Node> getTokens()
+	{
+		return tokens;
 	}
 
 	/**

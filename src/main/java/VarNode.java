@@ -1,3 +1,5 @@
+package Main;
+
 /**
  * Represents all variables in the expression tree
  */
