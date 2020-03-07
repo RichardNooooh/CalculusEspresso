@@ -1,4 +1,3 @@
-package Main;
 
 /**
  * Supports all unary operations within the expression tree

@@ -1,4 +1,3 @@
-package Main;
 
 /**
  * Represents the values in the expression tree

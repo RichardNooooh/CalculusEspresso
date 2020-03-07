@@ -1,4 +1,3 @@
-package Main;
 
 /**
  * Supports all binary operations within the expression tree

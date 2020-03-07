@@ -1,4 +1,3 @@
-package Main;
 
 public enum OperationType
 {

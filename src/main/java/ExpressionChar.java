@@ -1,4 +1,3 @@
-package Main;
 
 /**
  * Stores the ASCII characters for all important values

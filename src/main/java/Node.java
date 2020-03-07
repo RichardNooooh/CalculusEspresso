@@ -1,4 +1,3 @@
-package Main;
 
 /**
  * Represents the superclass of all Node objects

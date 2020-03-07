@@ -1,4 +1,3 @@
-package Main;
 
 import java.util.*;
 //TODO this class should be used by the ExpressionTree

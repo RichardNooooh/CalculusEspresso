@@ -1,4 +1,3 @@
-package Main;
 
 /**
  * Supports all calculus operations within the expression tree
