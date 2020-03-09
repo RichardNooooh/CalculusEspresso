@@ -18,7 +18,7 @@ public class ExpressionParserTest
 	}
 
 	@Nested
-	@DisplayName("The substituteMultiCharOp method should a string with")
+	@DisplayName("The substituteMultiCharOp method should return a string with")
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 	class substituteMultiCharOpTest
 	{
@@ -83,14 +83,34 @@ public class ExpressionParserTest
 		@DisplayName((char) 213 + " instead of der")
 		public void derTest()
 		{
-
+			assertAll("should return substituted char in string with preserved spacing",
+					() -> assertEquals(DER + "2", invokeExpr("der2")),
+					() -> assertEquals(DER + "(2)", invokeExpr("der(2)")),
+					() -> assertEquals(DER + " 2", invokeExpr("der 2")),
+					() -> assertEquals(DER + " (2)", invokeExpr("der (2)")),
+					() -> assertEquals("x" + DER + " 24x", invokeExpr("xder 24x")),
+					() -> assertEquals("x" + DER + "24x", invokeExpr("xder24x")),
+					() -> assertEquals("x " + DER + "24x", invokeExpr("x der24x")),
+					() -> assertEquals("x +" + DER + "24x", invokeExpr("x +der24x")),
+					() -> assertEquals("x * 3 +" + DER + "24+x", invokeExpr("x * 3 +der24+x"))
+			);
 		}
 
 		@Test
 		@DisplayName((char) 214 + " instead of int")
 		public void intTest()
 		{
-
+			assertAll("should return substituted char in string with preserved spacing",
+					() -> assertEquals(INT + "2", invokeExpr("int2")),
+					() -> assertEquals(INT + "(2)", invokeExpr("int(2)")),
+					() -> assertEquals(INT + " 2", invokeExpr("int 2")),
+					() -> assertEquals(INT + " (2)", invokeExpr("int (2)")),
+					() -> assertEquals("x" + INT + " 24x", invokeExpr("xint 24x")),
+					() -> assertEquals("x" + INT + "24x", invokeExpr("xint24x")),
+					() -> assertEquals("x " + INT + "24x", invokeExpr("x int24x")),
+					() -> assertEquals("x +" + INT + "24x", invokeExpr("x +int24x")),
+					() -> assertEquals("x * 3 +" + INT + "24+x", invokeExpr("x * 3 +int24+x"))
+			);
 		}
 
 		@Disabled
@@ -102,4 +122,62 @@ public class ExpressionParserTest
 		}
 
 	}
+
+	@Nested
+	@DisplayName("The infixToPostFix method should return")
+	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+	class infixToPostFixTest
+	{
+		final char SQRT = Operator.SQUARE_ROOT.getChar();
+		final char LOG = Operator.LOGARITHM.getChar();
+		final char DER = Operator.DERIVATIVE.getChar();
+		final char INT = Operator.INTEGRAL.getChar();
+
+		Method method;
+
+		@BeforeEach
+		public void setUp() throws NoSuchMethodException
+		{
+			method = ExpressionParser.class.getDeclaredMethod("infixToPostfix", String.class);
+			method.setAccessible(true);
+		}
+
+		/**
+		 * Since the invoke method is very long for lambdas, invokeExpr simply shortens the method call.
+		 * @return String returned from invoked method
+		 */
+		private String invokeExpr(String expression) throws InvocationTargetException, IllegalAccessException
+		{
+			return (String) method.invoke(parser, expression);
+		}
+
+		@Test
+		@DisplayName("A standard postfix expression with conserved whitespace")
+		public void binaryOpTest()
+		{
+			assertAll("",
+					() -> assertEquals("", invokeExpr(""))
+
+			);
+		}
+
+		@Test
+		@DisplayName("")
+		public void unaryOpTest()
+		{
+
+		}
+
+		@Test
+		@DisplayName("")
+		public void calcOpTest()
+		{
+
+		}
+
+	}
+
+
+
+
 }
