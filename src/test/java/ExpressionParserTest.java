@@ -152,10 +152,24 @@ public class ExpressionParserTest
 		}
 
 		@Test
-		@DisplayName("A standard postfix expression with conserved whitespace")
-		public void binaryOpTest()
+		@DisplayName("A standard addition/subtraction postfix expression")
+		public void binaryOpAdditiveNoSpaceTest()
 		{
-			assertAll("",
+			assertAll("should return a regular postfix expression",
+					() -> assertEquals("a b 3 2 - + +", invokeExpr("a+b+3-2")),
+					() -> assertEquals("-3 1 4 5 - - +(-3)+1-4-5", invokeExpr("(-3)+1-4-5")),
+					() -> assertEquals("169 5 3 4 52 60 -3 + - + + + -", invokeExpr("169-5+3+4+52-60+(-3)")),
+					() -> assertEquals("-1 1 1 1 1 1 - - - - -", invokeExpr("-1-1-1-1-1-1")),
+					() -> assertEquals("-1 -1 1 -1 1 -1 - - + - +", invokeExpr("-1+-1-1+-1-1--1"))
+
+			);
+		} //TODO add edge blank cases for everything
+
+		@Test
+		@DisplayName("A standard addition/subtraction postfix expression")
+		public void binaryOpAdditiveSpaceTest()
+		{
+			assertAll("should return a regular postfix expression with correct spacing",
 					() -> assertEquals("", invokeExpr(""))
 
 			);
