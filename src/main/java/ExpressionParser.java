@@ -1,6 +1,6 @@
 
-import java.beans.Expression;
 import java.util.*;
+
 //TODO this class should be used by the ExpressionTree
 /*
  * Parses a raw expression into tokens
@@ -12,29 +12,17 @@ public class ExpressionParser
 	/**
 	 * Constructs a new ExpressionParser
 	 */
-	public ExpressionParser(String expression)
+	public ExpressionParser(String expression, boolean isPostfix)
 	{
-		LinkedList<Node> tokens = parse(expression);
-//		ExpressionTree tree = new ExpressionTree(tokens);
+		expression = substituteMultiCharOp(expression);
+		tokens = parseToTokens(expression);
+		if (isPostfix)
+			tokens = infixToPostfix(tokens);
 	}
 
 	public LinkedList<Node> getTokens()
 	{
 		return tokens;
-	}
-
-	/**
-	 * Alters given expression and returns a new String in postfix notation with
-	 * substituted character operators
-	 *
-	 * @param expression
-	 * @return
-	 */
-	private String preprocessor(String expression)
-	{
-		expression = substituteMultiCharOp(expression);
-//		expression = infixToPostfix(expression);
-		return expression;
 	}
 
 	/**
@@ -69,18 +57,61 @@ public class ExpressionParser
 		return expression;
 	}
 
-	//TEMP
-	private String infixToPostfix(String expression)
+	/**
+	 * Converts the parsed tokens into postfix notation
+	 * @return Converted tokens list in postfix notation
+	 */
+	private LinkedList<Node> infixToPostfix(List<Node> tokensList)
 	{
-		List<Node> tokens = parse(expression);
-		String result = "";
-		for (Node token : tokens)
+		Stack<OperatorNode> valuesStack = new Stack<OperatorNode>();
+		LinkedList<Node> result = new LinkedList<Node>();
+
+		valuesStack.push(new ParenthesisNode(ExpressionChar.LEFT_PARENTHESIS));
+		tokensList.add(new ParenthesisNode(ExpressionChar.RIGHT_PARENTHESIS)); //probably not thread-safe
+
+		for (Node curNode : tokensList)
 		{
-			result += " " + token.toString() + " ";
+			if (curNode instanceof OperandNode)
+				result.add(curNode);
+			else if (curNode instanceof OperatorNode && !(curNode instanceof ParenthesisNode))
+			{
+				boolean pushedAllOfSamePrec = false;
+				OperatorNode curOpNode = (OperatorNode)curNode;
+
+				while (!pushedAllOfSamePrec && !(valuesStack.peek() instanceof ParenthesisNode))
+				{
+					Operator currentOp = curOpNode.getOperator();
+					Operator stackOp = valuesStack.peek().getOperator();
+
+					if (currentOp.comparePrecedence(stackOp) < 0)
+						pushedAllOfSamePrec = true;
+					else
+						result.add(valuesStack.pop());
+				}
+			}
+			else if (curNode instanceof ParenthesisNode)
+			{
+				if (((ParenthesisNode)curNode).isLeft)
+					valuesStack.push(new ParenthesisNode(ExpressionChar.LEFT_PARENTHESIS));
+				else
+				{
+					boolean foundLeftParen = false;
+					while (!foundLeftParen)
+					{
+						OperatorNode curValueNode = valuesStack.peek();
+						if (curValueNode instanceof ParenthesisNode)
+						{
+							valuesStack.pop();
+							foundLeftParen = true;
+						}
+						else
+							result.add(valuesStack.pop());
+					}
+				}
+			}
 		}
 
 		return result;
-
 	}
 
 	/**
@@ -89,10 +120,8 @@ public class ExpressionParser
 	 * @param expression
 	 * @return List of token nodes
 	 */
-	private LinkedList<Node> parse(String expression)
+	private LinkedList<Node> parseToTokens(String expression)
 	{
-		expression = preprocessor(expression);
-
 		LinkedList<Node> tokens = new LinkedList<Node>();
 		String currentNum = "";
 		char[] expressionArray = expression.toCharArray();
@@ -135,9 +164,14 @@ public class ExpressionParser
 				boolean isOperator = matchOperators(tokens, c);
 				if (!isOperator)
 				{
-					if (c == ExpressionChar.LEFT_PARENTHESIS.getChar() || c == ExpressionChar.RIGHT_PARENTHESIS.getChar())
+					if (c == ExpressionChar.LEFT_PARENTHESIS.getChar())
 					{
-						ParenthesisNode parenNode = new ParenthesisNode(c);
+						ParenthesisNode parenNode = new ParenthesisNode(ExpressionChar.LEFT_PARENTHESIS);
+						tokens.add(parenNode);
+					}
+					else if (c == ExpressionChar.RIGHT_PARENTHESIS.getChar())
+					{
+						ParenthesisNode parenNode = new ParenthesisNode(ExpressionChar.RIGHT_PARENTHESIS);
 						tokens.add(parenNode);
 					}
 					else
@@ -194,14 +228,18 @@ public class ExpressionParser
 	 * Represents the parenthesis in the expression. It should not be used in the Expression Tree, only for
 	 * parsing the expressions.
 	 */
-	private class ParenthesisNode extends Node
+	private class ParenthesisNode extends OperatorNode
 	{
 		boolean isLeft;
 
-		public ParenthesisNode(char parenthesis)
+		public ParenthesisNode(ExpressionChar parenthesis)
 		{
-			if (parenthesis == '(')
+			if (parenthesis == ExpressionChar.LEFT_PARENTHESIS)
 				isLeft = true;
+			else if (parenthesis == ExpressionChar.RIGHT_PARENTHESIS)
+				isLeft = false;
+			else
+				throw new IllegalArgumentException("Wrong ExpressionChar is used for ParenthesisNode");
 		}
 
 		public boolean isLeftParenthesis()
