@@ -167,7 +167,7 @@ public class ExpressionParserTest
 		} //TODO add edge blank cases for everything
 
 		@Test
-		@DisplayName("A standard addition/subtraction postfix expression")
+		@DisplayName("A standard addition/subtraction postfix expression given spaces")
 		public void binaryOpAdditiveSpaceTest()
 		{
 			assertAll("should return a regular postfix expression with correct spacing",

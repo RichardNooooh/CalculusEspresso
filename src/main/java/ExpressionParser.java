@@ -1,4 +1,5 @@
 
+import java.beans.Expression;
 import java.util.*;
 //TODO this class should be used by the ExpressionTree
 /*
@@ -32,7 +33,7 @@ public class ExpressionParser
 	private String preprocessor(String expression)
 	{
 		expression = substituteMultiCharOp(expression);
-		expression = infixToPostfix(expression);
+//		expression = infixToPostfix(expression);
 		return expression;
 	}
 
@@ -68,66 +69,19 @@ public class ExpressionParser
 		return expression;
 	}
 
-	/**
-	 * Converts the expression into postfix notation
-	 *
-	 * @param infixExpression
-	 * @return postfix expression
-	 */
-	private String infixToPostfix(String infixExpression)
+	//TEMP
+	private String infixToPostfix(String expression)
 	{
-		infixExpression += ")";
-		String newExpression = ""; //TODO probably use string builders instead
-		HashMap<Character, Operator> operatorMap = Operator.getRawCharList();
-		Stack<Character> stack = new Stack<Character>();
-		stack.push('(');
-		char[] expressionArray = infixExpression.toCharArray();
-
-		for (int i = 0; i < expressionArray.length; i++)
+		List<Node> tokens = parse(expression);
+		String result = "";
+		for (Node token : tokens)
 		{
-			char currentChar = expressionArray[i];
-			Operator currentOp;
-			if ((currentOp = operatorMap.get(currentChar)) != null) //is an operator
-			{
-				boolean pushedAllOfSamePrec = false;
-				while (!pushedAllOfSamePrec && stack.peek() != '(')
-				{
-					char currentTopChar = stack.peek();
-					Operator currentTopOp = operatorMap.get(currentTopChar);
-					if (currentTopOp.comparePrecedence(currentOp) < 0)
-						pushedAllOfSamePrec = true;
-					else
-						newExpression += stack.pop();
-				}
-				stack.push(currentOp.getChar());
-			}
-			else //is an operand or parenthesis
-			{
-				if (currentChar == ExpressionChar.LEFT_PARENTHESIS.getChar())
-					stack.push(ExpressionChar.LEFT_PARENTHESIS.getChar());
-				else if (currentChar == ExpressionChar.RIGHT_PARENTHESIS.getChar())
-				{
-					boolean foundLeftParen = false;
-					while (!foundLeftParen)
-					{
-						char currentTopChar = stack.peek();
-						if (currentTopChar == ExpressionChar.LEFT_PARENTHESIS.getChar())
-						{
-							foundLeftParen = true;
-							stack.pop();
-						}
-						else
-							newExpression += stack.pop();
-					}
-				}
-				else
-					newExpression += currentChar;
-			}
+			result += " " + token.toString() + " ";
 		}
 
+		return result;
 
-		return newExpression;
-	} //TODO after implementing the tree, test which is faster to evaluate: normal postfix string vs expression tree
+	}
 
 	/**
 	 * Return a list of token nodes of all operators and operands in the given expression
@@ -144,18 +98,9 @@ public class ExpressionParser
 		char[] expressionArray = expression.toCharArray();
 		boolean onNum = false;
 
-		for (char c : expressionArray)
+		for (int i = 0; i < expressionArray.length; i++)
 		{
-			if (c == ' ')
-			{
-				if (!currentNum.equals(""))
-				{
-					NumNode toAdd = new NumNode(Double.parseDouble(currentNum));
-					currentNum = "";
-					tokens.add(toAdd);
-				}
-				continue;
-			}
+			char c = expressionArray[i];
 
 			// 0 through 9 or '.'
 			if ((c >= ExpressionChar.ZERO.getChar() && c <= ExpressionChar.NINE.getChar())
@@ -177,21 +122,34 @@ public class ExpressionParser
 						tokens.add(newNum);
 					}
 				}
+				//check if there's a unary negative sign
+				if (c == Operator.SUBTRACTION.getChar())
+				{
+					HashMap<Character, Operator> map = Operator.getRawCharList();
+					if (i == 0 || map.get(expressionArray[i - 1]) != null || expressionArray[i - 1] == ExpressionChar.LEFT_PARENTHESIS.getChar())
+					{
+						currentNum += Operator.SUBTRACTION.getChar();
+						continue;
+					}
+				}
 				boolean isOperator = matchOperators(tokens, c);
 				if (!isOperator)
 				{
-					VarNode varNode = new VarNode(c);
-					tokens.add(varNode);
+					if (c == ExpressionChar.LEFT_PARENTHESIS.getChar() || c == ExpressionChar.RIGHT_PARENTHESIS.getChar())
+					{
+						ParenthesisNode parenNode = new ParenthesisNode(c);
+						tokens.add(parenNode);
+					}
+					else
+					{
+						VarNode varNode = new VarNode(c);
+						tokens.add(varNode);
+					}
 				}
 
 			}
-		}
-		//TODO fix, because this is jank.
-		if (onNum)
-		{
-			NumNode newNum = new NumNode(Double.parseDouble(currentNum));
-			tokens.add(newNum);
-		}
+
+		} //TODO 'tis real bad. please refactor into something pretty. omfg this is so god damn bad
 		return tokens;
 	}
 
@@ -230,6 +188,31 @@ public class ExpressionParser
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Represents the parenthesis in the expression. It should not be used in the Expression Tree, only for
+	 * parsing the expressions.
+	 */
+	private class ParenthesisNode extends Node
+	{
+		boolean isLeft;
+
+		public ParenthesisNode(char parenthesis)
+		{
+			if (parenthesis == '(')
+				isLeft = true;
+		}
+
+		public boolean isLeftParenthesis()
+		{
+			return isLeft;
+		}
+
+		public String toString()
+		{
+			return isLeft ? "(" : ")";
+		}
 	}
 
 }
