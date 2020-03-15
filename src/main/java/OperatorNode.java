@@ -22,4 +22,5 @@ public abstract class OperatorNode extends Node
 	{
 		return operator.toString();
 	}
+
 }
