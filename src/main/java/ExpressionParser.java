@@ -251,6 +251,14 @@ public class ExpressionParser
 		{
 			return isLeft ? "(" : ")";
 		}
+
+		/**
+		 * Should not be called!
+		 */
+		@Override
+		protected double eval(Map<Character, Double> env) {
+			return 0;
+		}
 	}
 
 }
