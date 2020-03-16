@@ -137,6 +137,8 @@ public class ExpressionParser
 			{
 				currentNum += c;
 				onNum = true;
+				if (i == expressionArray.length - 1)
+					tokens.add(new NumNode(Double.parseDouble(currentNum)));
 			}
 			else //variables or symbols
 			{
@@ -230,7 +232,7 @@ public class ExpressionParser
 	 */
 	private class ParenthesisNode extends OperatorNode
 	{
-		boolean isLeft;
+		private boolean isLeft;
 
 		public ParenthesisNode(ExpressionChar parenthesis)
 		{
