@@ -1,7 +1,14 @@
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.function.ThrowingConsumer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 //NOTE if I want to utilize the @Tag, watch https://www.youtube.com/watch?v=0m-vtBB66cI&list=PLqq-6Pq4lTTa4ad5JISViSb2FVG8Vwa4o&index=25
@@ -14,7 +21,7 @@ public class ExpressionParserTest
 	@BeforeAll
 	public void setUp()
 	{
-		parser = new ExpressionParser("");
+		parser = new ExpressionParser("", true);
 	}
 
 	@Nested
@@ -124,23 +131,56 @@ public class ExpressionParserTest
 	}
 
 	@Nested
-	@DisplayName("The infixToPostFix method should return")
+	@DisplayName("The parse method should return a LinkedList of Nodes")
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-	class infixToPostFixTest
+	class parseToTokensTest
 	{
-		final char SQRT = Operator.SQUARE_ROOT.getChar();
-		final char LOG = Operator.LOGARITHM.getChar();
-		final char DER = Operator.DERIVATIVE.getChar();
-		final char INT = Operator.INTEGRAL.getChar();
-
+		//LinkedList<Node> tokens;
 		Method method;
 
 		@BeforeEach
 		public void setUp() throws NoSuchMethodException
 		{
-			method = ExpressionParser.class.getDeclaredMethod("infixToPostfix", String.class);
+			method = ExpressionParser.class.getDeclaredMethod("parseToTokens", String.class);
 			method.setAccessible(true);
 		}
+
+		@TestFactory
+		@DisplayName("When given an expression String")
+		public Stream<DynamicTest> test()
+		{
+			List<String> inputExpressionList = Arrays.asList(
+					"a+b+3-2",
+					"(-3)+1-4-5",
+					"169-5+3+4+52-60+(-3)",
+					"-1-1-1-1-1-1",
+					"-1+-1-1+-1-1--1",
+					"1.00+3+5.09-2+(-4.165)",
+					""
+			);
+
+			List<String> expectedList = Arrays.asList(
+					"[a, +, b, +, 3.0, -, 2.0]",
+					"[(, -3.0, ), +, 1.0, -, 4.0, -, 5.0]",
+					"[169.0, -, 5.0, +, 3.0, +, 4.0, +, 52.0, -, 60.0, +, (, -3.0, )]",
+					"[-1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0]",
+					"[-1.0, +, -1.0, -, 1.0, +, -1.0, -, 1.0, -, -1.0]",
+					"[1.0, +, 3.0, +, 5.09, -, 2.0, +, (, -4.165, )]",
+					"[]"
+			);
+
+			Iterator<String> inputGen = inputExpressionList.iterator();
+			Function<String, String> displayNameGen = (input) -> "Input: " + input;
+
+			ThrowingConsumer<String> testExecutor = (input) ->
+			{
+				int i = inputExpressionList.indexOf(input);
+				assertEquals(expectedList.get(i), invokeExpr(input));
+			};
+
+			return DynamicTest.stream(inputGen, displayNameGen, testExecutor);
+		}
+
 
 		/**
 		 * Since the invoke method is very long for lambdas, invokeExpr simply shortens the method call.
@@ -148,50 +188,23 @@ public class ExpressionParserTest
 		 */
 		private String invokeExpr(String expression) throws InvocationTargetException, IllegalAccessException
 		{
-			return (String) method.invoke(parser, expression);
+			return method.invoke(parser, expression).toString();
 		}
-
-		@Test
-		@DisplayName("A standard addition/subtraction postfix expression")
-		public void binaryOpAdditiveNoSpaceTest()
-		{
-			assertAll("should return a regular postfix expression",
-					() -> assertEquals("a b 3 2 - + +", invokeExpr("a+b+3-2")),
-					() -> assertEquals("-3 1 4 5 - - +", invokeExpr("(-3)+1-4-5")),
-					() -> assertEquals("169 5 3 4 52 60 -3 + - + + + -", invokeExpr("169-5+3+4+52-60+(-3)")),
-					() -> assertEquals("-1 1 1 1 1 1 - - - - -", invokeExpr("-1-1-1-1-1-1")),
-					() -> assertEquals("-1 -1 1 -1 1 -1 - - + - +", invokeExpr("-1+-1-1+-1-1--1")),
-					() -> assertEquals("1.00 3 5.09 2 -4.165 + - + +", invokeExpr("1.00+3+5.09-2+(-4.165)")),
-					() -> assertEquals("", invokeExpr(""))
-			);
-		} //TODO add edge blank cases for everything
-
-		@Test
-		@DisplayName("A standard addition/subtraction postfix expression given spaces")
-		public void binaryOpAdditiveSpaceTest()
-		{
-			assertAll("should return a regular postfix expression with correct spacing",
-					() -> assertEquals("", invokeExpr(""))
-
-			);
-		}
-
-		@Test
-		@DisplayName("")
-		public void unaryOpTest()
-		{
-
-		}
-
-		@Test
-		@DisplayName("")
-		public void calcOpTest()
-		{
-
-		}
-
 	}
 
+	@Nested
+	@DisplayName("The infixToPostFix method should return")
+	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+	class infixToPostFixTest
+	{
+		LinkedList<Node> tokens;
+
+		@BeforeEach
+		public void setUp()
+		{
+			tokens = new LinkedList<Node>();
+		}
+	}
 
 
 
