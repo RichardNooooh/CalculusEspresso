@@ -5,9 +5,9 @@ import java.util.Map;
  */
 public class UnaryNode extends OperatorNode
 {
-	public UnaryNode(Operator bOperator)
+	public UnaryNode(Operator uOperator)
 	{
-		this.operator = bOperator;
+		this.operator = uOperator;
 	}
 
 	@Override
@@ -21,6 +21,8 @@ public class UnaryNode extends OperatorNode
 				return Math.sqrt(val);
 			case LOGARITHM:
 				return Math.log(val);
+			case NEGATIVE:
+				return -val;
 			default:
 				return 0;
 		}

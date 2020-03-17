@@ -14,6 +14,11 @@ public class NumNode extends OperandNode {
         val = value;
     }
 
+    public void setNeg()
+    {
+        val = -val;
+    }
+
     /**
      * @return the value this node contains
      */

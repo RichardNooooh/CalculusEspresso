@@ -16,6 +16,7 @@ public enum Operator
 	EXPONENTIAL("^", (char) 94, OperationType.BINARY, (byte) 3),
 
 	//Unary Operations
+	NEGATIVE("-", (char) 45, OperationType.UNARY, (byte) 3),
 	SQUARE_ROOT("sqrt", (char) 208, OperationType.UNARY, (byte) 3) //TODO determine proper precedence for these operators
 	{
 		@Override
@@ -24,7 +25,7 @@ public enum Operator
 			return "SquareRoot";
 		}
 	},
-	LOGARITHM("log", (char) 209, OperationType.UNARY, (byte) 4)
+	LOGARITHM("log", (char) 209, OperationType.UNARY, (byte) 3)
 	{
 		@Override
 		public String toString()
@@ -34,7 +35,7 @@ public enum Operator
 	},
 
 	//Calculus Operations
-	DERIVATIVE("der", (char) 213, OperationType.CALCULUS, (byte) 5)
+	DERIVATIVE("der", (char) 213, OperationType.CALCULUS, (byte) 4)
 	{
 		@Override
 		public String toString()
@@ -42,7 +43,7 @@ public enum Operator
 			return "Derivative";
 		}
 	},
-	INTEGRAL("int", (char) 214, OperationType.CALCULUS, (byte) 5)
+	INTEGRAL("int", (char) 214, OperationType.CALCULUS, (byte) 4)
 	{
 		@Override
 		public String toString()
@@ -73,7 +74,7 @@ public enum Operator
 		ArrayList<Operator> result = new ArrayList<Operator>();
 		for (Operator op : values())
 		{
-			if (op.getType() != OperationType.BINARY)
+			if (op.getType() != OperationType.BINARY && op != Operator.NEGATIVE)
 				result.add(op);
 		}
 		return result;

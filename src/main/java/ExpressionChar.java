@@ -26,6 +26,11 @@ public enum ExpressionChar
 		return replacementChar;
 	}
 
+	public static boolean isNumber(char c)
+	{
+		return c >= ZERO.getChar() && c <= NINE.getChar();
+	}
+
 	/**
 	 * @return the string representation of the replacement character
 	 */
