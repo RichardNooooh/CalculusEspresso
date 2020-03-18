@@ -3,7 +3,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 //TODO this class should be used by the ExpressionTree
-/*
+/**
  * Parses a raw expression into tokens
  */
 public class ExpressionParser
@@ -60,11 +60,10 @@ public class ExpressionParser
 	}
 
 	/**
-	 * Return a list of token nodes of all operators and operands in the given expression
+	 * Returns a new LinkedList of token Nodes from an expression String.
 	 *
-	 *
-	 * @param expression
-	 * @return List of token nodes
+	 * @param expression String that represents a mathematical expression
+	 * @return LinkedList of token nodes
 	 */
 	private LinkedList<Node> parseToTokens(String expression)
 	{
@@ -75,6 +74,116 @@ public class ExpressionParser
 		return tokensList;
 	}
 
+	/**
+	 * Produces the initial list of token Nodes for further processing.
+	 *
+	 * @param tokensList is a blank LinkedList<Node>
+	 * @param expression is the original mathematical expression String
+	 * @return a raw LinkedList of token Nodes
+	 */
+	private LinkedList<Node> initialTokenizer(LinkedList<Node> tokensList, String expression)
+	{
+		StringBuilder numBuffer = new StringBuilder();
+		boolean buffHasDecimal = false;
+		char[] expressionCharArray = expression.toCharArray();
+		for (int i = 0; i < expressionCharArray.length; i++)
+		{
+			char c = expressionCharArray[i];
+			if (!Pattern.matches("\\s", "" + c))
+			{
+				//Check numbers/decimal
+				if (ExpressionChar.isNumber(c))
+					numBuffer.append(c);
+				else if (c == ExpressionChar.DECIMAL.getChar())
+				{
+					if (!buffHasDecimal)
+					{
+						numBuffer.append(c);
+						buffHasDecimal = true;
+					}
+					else
+						throw new IllegalArgumentException("Numbers can only have 1 decimal.");
+				}
+				//Non-numerical character
+				else
+				{
+					//reset numBuffer and add number to tokens
+					clearNumBuffer(tokensList, numBuffer.toString());
+					numBuffer = new StringBuilder();
+					buffHasDecimal = false;
+
+					if (c == ExpressionChar.LEFT_PARENTHESIS.getChar() || c == ExpressionChar.RIGHT_PARENTHESIS.getChar())
+						tokensList.add(new ParenthesisNode(c));
+					else
+					{
+						boolean isOperator = matchOperators(tokensList, c);
+						if (!isOperator)
+							tokensList.add(new VarNode(c));
+					}
+				}
+			}
+		}
+		clearNumBuffer(tokensList, numBuffer.toString());
+		return tokensList;
+	}
+
+	/**
+	 * Adds a new NumNode based on what is inside the numBuffer String
+	 *
+	 * @param tokensList is a LinkedList of Nodes that is currently being processed by
+	 *                   initialTokenizer()
+	 * @param numBuffer is a buffer String to be converted into a NumNode
+	 */
+	private void clearNumBuffer(LinkedList<Node> tokensList, String numBuffer)
+	{
+		if (!numBuffer.isEmpty())
+			tokensList.add(new NumNode(Double.parseDouble(numBuffer)));
+	}
+
+	/**
+	 * Adds the current character into the tokens list as an operator if possible and return true.
+	 * Otherwise, return false.
+	 *
+	 * @param c is the current character of the expression string
+	 * @return If c was added into tokens, return true. Else, return false
+	 */
+	private boolean matchOperators(LinkedList<Node> tokensList, char c)
+	{
+		for (Operator op : Operator.values())
+		{
+			char opChar = op.getChar();
+			if (c == opChar)
+			{
+				OperationType type = op.getType();
+				switch (type)
+				{
+					case BINARY:
+						BinaryNode bNode = new BinaryNode(op);
+						tokensList.add(bNode);
+						break;
+					case UNARY:
+						UnaryNode uNode = new UnaryNode(op);
+						tokensList.add(uNode);
+						break;
+					case CALCULUS:
+						CalculusNode cNode = new CalculusNode(op);
+						tokensList.add(cNode);
+						break;
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Returns a new LinkedList of token Nodes after iterating through the list twice.
+	 * This method first iterates through to identify the UnaryNegative nodes,
+	 * then iterates through to produce negative NumNodes.
+	 *
+	 * @param tokensList is a list of token Nodes from initialTokenizer()
+	 * @return a contracted token Nodes list with Unary Negative OperatorNodes
+	 */
 	private LinkedList<Node> addUnaryNegativeOperators(LinkedList<Node> tokensList)
 	{
 		LinkedList<Node> newTokens = new LinkedList<Node>();
@@ -122,61 +231,12 @@ public class ExpressionParser
 		return resultTokens;
 	}
 
-	private LinkedList<Node> initialTokenizer(LinkedList<Node> tokensList, String expression)
-	{
-		StringBuilder numBuffer = new StringBuilder();
-		boolean buffHasDecimal = false;
-		char[] expressionCharArray = expression.toCharArray();
-		for (int i = 0; i < expressionCharArray.length; i++)
-		{
-			char c = expressionCharArray[i];
-			if (!Pattern.matches("\\s", "" + c))
-			{
-				//Check numbers/decimal
-				if (c >= ExpressionChar.ZERO.getChar() && c <= ExpressionChar.NINE.getChar())
-					numBuffer.append(c);
-				else if (c == ExpressionChar.DECIMAL.getChar())
-				{
-					if (!buffHasDecimal)
-					{
-						numBuffer.append(c);
-						buffHasDecimal = true;
-					}
-					else
-						throw new IllegalArgumentException("Numbers can only have 1 decimal.");
-				}
-				//Non-numerical character
-				else
-				{
-					//reset numBuffer and add number to tokens
-					clearNumBuffer(tokensList, numBuffer.toString());
-					numBuffer = new StringBuilder();
-					buffHasDecimal = false;
-
-					if (c == ExpressionChar.LEFT_PARENTHESIS.getChar() || c == ExpressionChar.RIGHT_PARENTHESIS.getChar())
-						tokensList.add(new ParenthesisNode(c));
-					else
-					{
-						boolean isOperator = matchOperators(tokensList, c);
-						if (!isOperator)
-							tokensList.add(new VarNode(c));
-					}
-				}
-			}
-		}
-		clearNumBuffer(tokensList, numBuffer.toString());
-		return tokensList;
-	}
-
-	private void clearNumBuffer(LinkedList<Node> tokensList, String numBuffer)
-	{
-		if (!numBuffer.isEmpty())
-			tokensList.add(new NumNode(Double.parseDouble(numBuffer)));
-	}
 
 	/**
-	 * Converts the parsed tokens into postfix notation
-	 * @return Converted tokens list in postfix notation
+	 * Converts the complete processed infix notation tokensList into postFix notation
+	 *
+	 * @param tokensList is an infix notation list of token Nodes
+	 * @return a new LinkedList of Nodes in postfix notation
 	 */
 	private LinkedList<Node> infixToPostfix(List<Node> tokensList)
 	{
@@ -232,42 +292,6 @@ public class ExpressionParser
 	}
 
 	/**
-	 * Adds the current character into the tokens list as an operator if possible.
-	 * Otherwise, return false.
-	 *
-	 * @param c      is the current character of the expression string
-	 * @return If c was added into tokens, return true. Else, return false
-	 */
-	private boolean matchOperators(LinkedList<Node> tokensList, char c)
-	{
-		for (Operator op : Operator.values())
-		{
-			char opChar = op.getChar();
-			if (c == opChar)
-			{
-				OperationType type = op.getType();
-				switch (type)
-				{
-					case BINARY:
-						BinaryNode bNode = new BinaryNode(op);
-						tokensList.add(bNode);
-						break;
-					case UNARY:
-						UnaryNode uNode = new UnaryNode(op);
-						tokensList.add(uNode);
-						break;
-					case CALCULUS:
-						CalculusNode cNode = new CalculusNode(op);
-						tokensList.add(cNode);
-						break;
-				}
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Represents the parenthesis in the expression. It should not be used in the Expression Tree, only for
 	 * parsing the expressions.
 	 */
@@ -275,6 +299,10 @@ public class ExpressionParser
 	{
 		private boolean isLeft;
 
+		/**
+		 * Constructs a new ParenthesisNode object from a char
+		 * @param parenthesis is a parenthesis character
+		 */
 		public ParenthesisNode(char parenthesis)
 		{
 			if (parenthesis == ExpressionChar.LEFT_PARENTHESIS.getChar())
@@ -285,6 +313,10 @@ public class ExpressionParser
 				throw new IllegalArgumentException("Only parentheses for parenthesis nodes");
 		}
 
+		/**
+		 * Constructs a new ParenthesisNode object from a ExpressionChar
+		 * @param parenthesis is a ExpressionChar parenthesis enum
+		 */
 		public ParenthesisNode(ExpressionChar parenthesis)
 		{
 			if (parenthesis == ExpressionChar.LEFT_PARENTHESIS)
@@ -295,11 +327,17 @@ public class ExpressionParser
 				throw new IllegalArgumentException("Only parentheses for parenthesis nodes");
 		}
 
+		/**
+		 * @return the type of parenthesis this ParenthesisNode encapsulates
+		 */
 		public boolean isLeftParenthesis()
 		{
 			return isLeft;
 		}
 
+		/**
+		 * @return a left or right parenthesis depending on the isLeft boolean
+		 */
 		public String toString()
 		{
 			return isLeft ? "(" : ")";
@@ -307,10 +345,12 @@ public class ExpressionParser
 
 		/**
 		 * Should not be called!
+		 * A ParenthesisNode should not exist in the ExpressionTree
 		 */
 		@Override
-		protected double eval(Map<Character, Double> env) {
-			return 0;
+		protected double eval(Map<Character, Double> env)
+		{
+			throw new IllegalCallerException("ParenthesisNode's eval() method should not be called.");
 		}
 	}
 
