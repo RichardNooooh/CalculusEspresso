@@ -316,6 +316,7 @@ public class ExpressionParser
 					else
 						result.add(valuesStack.pop());
 				}
+				valuesStack.push(curOpNode);
 			}
 			else if (curNode instanceof ParenthesisNode)
 			{
