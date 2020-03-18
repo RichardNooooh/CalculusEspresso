@@ -70,6 +70,7 @@ public class ExpressionParser
 		LinkedList<Node> tokensList = new LinkedList<Node>();
 		tokensList = initialTokenizer(tokensList, expression);
 		tokensList = addUnaryNegativeOperators(tokensList);
+		tokensList = addImplicitMultiplication(tokensList);
 
 		return tokensList;
 	}
@@ -231,6 +232,56 @@ public class ExpressionParser
 		return resultTokens;
 	}
 
+	/**
+	 * Implicit multiplication should be added in the following situations:
+	 * - {VarNode}, {NumNode}
+	 * - {NumNode}, {VarNode}
+	 * - {NumNode/VarNode}, {UnaryNode/CalculusNode}
+	 * - {VarNode}, {VarNode}
+	 * - {NumNode/VarNode}, {ParenthesisNode.left}
+	 *
+	 * TODO All other implicit multiplication situations will be considered illegal and throw
+	 * an Exception.
+	 *
+	 * @param tokensList is an infix notation tokens list
+	 * @return a new LinkedList of Nodes with implicit multiplication converted to explicit
+	 */
+	private LinkedList<Node> addImplicitMultiplication(LinkedList<Node> tokensList)
+	{
+		final int tokenListSize = tokensList.size();
+		LinkedList<Node> resultList = new LinkedList<Node>();
+		for (int i = 0; i < tokenListSize; i++)
+		{
+			Node thisNode = tokensList.get(i);
+			resultList.add(thisNode);
+
+			if (i != tokenListSize - 1)
+			{
+				if (thisNode instanceof NumNode)
+				{
+					Node nextNode = tokensList.get(i + 1);
+					if (nextNode instanceof VarNode || nextNode instanceof UnaryNode //TODO consider having Unary/Calculus Nodes extend some FunctionNode
+													|| nextNode instanceof CalculusNode
+													|| (nextNode instanceof ParenthesisNode && ((ParenthesisNode)nextNode).isLeftParenthesis()))
+					{
+						resultList.add(new BinaryNode(Operator.MULTIPLICATION));
+					}
+				}
+				else if (thisNode instanceof VarNode)
+				{
+					Node nextNode = tokensList.get(i + 1);
+					if (nextNode instanceof OperandNode || nextNode instanceof UnaryNode
+														|| nextNode instanceof CalculusNode
+														|| (nextNode instanceof ParenthesisNode && ((ParenthesisNode)nextNode).isLeftParenthesis()))
+					{
+						resultList.add(new BinaryNode(Operator.MULTIPLICATION));
+					}
+				}
+			}
+		}
+
+		return resultList;
+	}
 
 	/**
 	 * Converts the complete processed infix notation tokensList into postFix notation
