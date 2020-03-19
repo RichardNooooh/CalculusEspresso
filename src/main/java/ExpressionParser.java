@@ -297,11 +297,14 @@ public class ExpressionParser
 		valuesStack.push(new ParenthesisNode(ExpressionChar.LEFT_PARENTHESIS));
 		tokensList.add(new ParenthesisNode(ExpressionChar.RIGHT_PARENTHESIS)); //probably not thread-safe
 
-		for (Node curNode : tokensList)
+		Iterator tokensIterator = tokensList.iterator();
+		while (tokensIterator.hasNext())
 		{
+			Node curNode = (Node) tokensIterator.next();
+
 			if (curNode instanceof OperandNode)
 				result.add(curNode);
-			else if (curNode instanceof OperatorNode && !(curNode instanceof ParenthesisNode))
+			else if (curNode instanceof BinaryNode)
 			{
 				boolean pushedAllOfSamePrec = false;
 				OperatorNode curOpNode = (OperatorNode)curNode;
@@ -311,10 +314,11 @@ public class ExpressionParser
 					Operator currentOp = curOpNode.getOperator();
 					Operator stackOp = valuesStack.peek().getOperator();
 
-					if (currentOp.comparePrecedence(stackOp) < 0)
-						pushedAllOfSamePrec = true;
-					else
+					int comparison = currentOp.comparePrecedence(stackOp);
+					if (comparison < 0 || comparison == 0 && currentOp.isLeftAssociative())
 						result.add(valuesStack.pop());
+					else
+						pushedAllOfSamePrec = true;
 				}
 				valuesStack.push(curOpNode);
 			}
@@ -337,6 +341,33 @@ public class ExpressionParser
 							result.add(valuesStack.pop());
 					}
 				}
+			}
+			else if (curNode instanceof UnaryNode || curNode instanceof CalculusNode)
+			{
+				LinkedList<Node> innerExpression = new LinkedList<Node>();
+				int leftParenCounter = 0;
+				boolean foundInnerExpression = false;
+				while (!foundInnerExpression)
+				{
+					Node nextNode = (Node) tokensIterator.next();
+					if (nextNode instanceof ParenthesisNode)
+					{
+						if (((ParenthesisNode)nextNode).isLeftParenthesis())
+							leftParenCounter++;
+						else
+						{
+							leftParenCounter--;
+							if (leftParenCounter == 0)
+								foundInnerExpression = true;
+						}
+					}
+
+					innerExpression.add(nextNode);
+				}
+				LinkedList<Node> postFixInnerExpression = infixToPostfix(innerExpression);
+				result.add(new WallNode());
+				result.addAll(postFixInnerExpression);
+				result.add(curNode);
 			}
 		}
 

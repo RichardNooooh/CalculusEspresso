@@ -1,5 +1,6 @@
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Stack;
 
@@ -15,7 +16,7 @@ public class ExpressionTree
 		//TODO isPostfix boolean assumed to be true for now.
 		ExpressionParser parser = new ExpressionParser(expression, true);
 		LinkedList<Node> tokens = parser.getTokens();
-		setTree(tokens);
+		root = setTree(tokens);
 	}
 
 	public ExpressionTree(LinkedList<Node> tokens)
@@ -23,23 +24,56 @@ public class ExpressionTree
 		setTree(tokens);
 	}
 
-	private void setTree(LinkedList<Node> tokens)
+	private Node setTree(LinkedList<Node> tokens)
 	{
 		Stack<Node> values = new Stack<Node>();
-		for (Node n : tokens)
+
+		Iterator<Node> tokenIterator = tokens.iterator();
+		while (tokenIterator.hasNext())
 		{
-			if (n instanceof NumNode || n instanceof VarNode)
-			{
+			Node n = tokenIterator.next();
+
+			if (n instanceof OperandNode)
 				values.push(n);
-			}
-			else if (n instanceof OperatorNode)
+			else if (n instanceof BinaryNode)
 			{
 				n.setRight(values.pop());
 				n.setLeft(values.pop());
 				values.push(n);
 			}
+			else if (n instanceof WallNode)
+			{
+				//n must be Unary/Calculus Node
+				//assume wall notation implementation
+				LinkedList<Node> innerExpression = new LinkedList<Node>();
+				Node nextNode = null;
+				Node innerRoot = null;
+				boolean foundEndOfInnerExpression = false;
+				int innerExpressionsCounter = 1;
+
+				while (!foundEndOfInnerExpression && tokenIterator.hasNext()) //TODO implement an exception here instead of checking if tokenIterator has next
+				{
+					nextNode = tokenIterator.next();
+					innerExpression.add(nextNode);
+
+					if (nextNode instanceof UnaryNode || nextNode instanceof CalculusNode)
+					{
+						innerExpressionsCounter--;
+						if (innerExpressionsCounter == 0)
+						{
+							foundEndOfInnerExpression = true;
+							innerRoot = setTree(innerExpression);
+						}
+					}
+					else if (nextNode instanceof WallNode)
+						innerExpressionsCounter++;
+				}
+
+				nextNode.setRight(innerRoot);
+				values.push(nextNode);
+			}
 		}
-		root = values.pop();
+		return values.pop();
 	}
 
 	public double evaluate(HashMap<Character, Double> variableValues)

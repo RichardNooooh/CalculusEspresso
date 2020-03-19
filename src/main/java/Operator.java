@@ -9,15 +9,15 @@ import java.util.HashMap;
 public enum Operator
 {
 	//Binary Operations
-	ADDITION("+", (char) 43, OperationType.BINARY, (byte) 1),
-	SUBTRACTION("-", (char) 45, OperationType.BINARY, (byte) 1),
-	MULTIPLICATION("*", (char) 42, OperationType.BINARY, (byte) 2),
-	DIVISION("/", (char) 47, OperationType.BINARY, (byte) 2),
-	EXPONENTIAL("^", (char) 94, OperationType.BINARY, (byte) 3),
+	ADDITION("+", (char) 43, OperationType.BINARY, (byte) 1, true),
+	SUBTRACTION("-", (char) 45, OperationType.BINARY, (byte) 1, true),
+	MULTIPLICATION("*", (char) 42, OperationType.BINARY, (byte) 2, true),
+	DIVISION("/", (char) 47, OperationType.BINARY, (byte) 2, true),
+	EXPONENTIAL("^", (char) 94, OperationType.BINARY, (byte) 3, false),
 
 	//Unary Operations
-	NEGATIVE("-", (char) 45, OperationType.UNARY, (byte) 3),
-	SQUARE_ROOT("sqrt", (char) 208, OperationType.UNARY, (byte) 3) //TODO determine proper precedence for these operators
+	NEGATIVE("-", (char) 45, OperationType.UNARY, (byte) 3, true),
+	SQUARE_ROOT("sqrt", (char) 208, OperationType.UNARY, (byte) 3, true) //TODO determine proper precedence for these operators
 	{
 		@Override
 		public String toString()
@@ -25,7 +25,7 @@ public enum Operator
 			return "SquareRoot";
 		}
 	},
-	LOGARITHM("log", (char) 209, OperationType.UNARY, (byte) 3)
+	LOGARITHM("log", (char) 209, OperationType.UNARY, (byte) 3, true)
 	{
 		@Override
 		public String toString()
@@ -35,7 +35,7 @@ public enum Operator
 	},
 
 	//Calculus Operations
-	DERIVATIVE("der", (char) 213, OperationType.CALCULUS, (byte) 4)
+	DERIVATIVE("der", (char) 213, OperationType.CALCULUS, (byte) 4, true)
 	{
 		@Override
 		public String toString()
@@ -43,7 +43,7 @@ public enum Operator
 			return "Derivative";
 		}
 	},
-	INTEGRAL("int", (char) 214, OperationType.CALCULUS, (byte) 4)
+	INTEGRAL("int", (char) 214, OperationType.CALCULUS, (byte) 4, true)
 	{
 		@Override
 		public String toString()
@@ -56,12 +56,19 @@ public enum Operator
 	private char chr;
 	private OperationType type;
 	private byte precedence;
-	Operator(String abbrev, char chr, OperationType type, byte precedence)
+	private boolean isLeftAssociative;
+	Operator(String abbrev, char chr, OperationType type, byte precedence, boolean isLeftAssociative)
 	{
 		this.abbrev = abbrev;
 		this.chr = chr;
 		this.type = type;
 		this.precedence = precedence;
+		this.isLeftAssociative = isLeftAssociative;
+	}
+
+	public boolean isLeftAssociative()
+	{
+		return isLeftAssociative;
 	}
 
 	/**
