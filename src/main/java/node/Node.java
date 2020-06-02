@@ -1,8 +1,9 @@
+package node;
 
 import java.util.Map;
 
 /**
- * Represents the superclass of all Node objects
+ * Represents the superclass of all node.Node objects
  */
 public abstract class Node
 {
@@ -21,7 +22,7 @@ public abstract class Node
 		this.right = right;
 	}
 
-	protected abstract double eval(Map<String, Double> env); //TODO do I need... this env parameter? Can I factor it out?
+	public abstract double eval(Map<String, Double> env); //TODO do I need... this env parameter? Can I factor it out?
 
 	//TODO add general tree traversal methods
 }

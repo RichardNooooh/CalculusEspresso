@@ -1,3 +1,4 @@
+package node;
 
 import java.util.Map;
 
@@ -9,7 +10,7 @@ public class NumNode extends OperandNode {
     private double val;
 
     /**
-     * Constructs a new NumNode
+     * Constructs a new node.NumNode
      */
     public NumNode(double value) {
         val = value;
@@ -36,7 +37,7 @@ public class NumNode extends OperandNode {
     }
 
     @Override
-    protected double eval(Map<String, Double> env) {
+    public double eval(Map<String, Double> env) {
         return val;
     }
 }

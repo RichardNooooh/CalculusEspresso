@@ -1,6 +1,7 @@
 
 import java.util.*;
 import java.util.regex.Pattern;
+import node.*;
 
 //TODO this class should be used by the ExpressionTree
 /**
@@ -104,7 +105,7 @@ public class ExpressionParser
 	/**
 	 * Produces the initial list of token Nodes for further processing.
 	 *
-	 * @param tokensList is a blank LinkedList<Node>
+	 * @param tokensList is a blank LinkedList<node.Node>
 	 * @param expression is the original mathematical expression String
 	 * @return a raw LinkedList of token Nodes
 	 */
@@ -155,11 +156,11 @@ public class ExpressionParser
 	}
 
 	/**
-	 * Adds a new NumNode based on what is inside the numBuffer String
+	 * Adds a new node.NumNode based on what is inside the numBuffer String
 	 *
 	 * @param tokensList is a LinkedList of Nodes that is currently being processed by
 	 *                   initialTokenizer()
-	 * @param numBuffer is a buffer String to be converted into a NumNode
+	 * @param numBuffer is a buffer String to be converted into a node.NumNode
 	 */
 	private void clearNumBuffer(LinkedList<Node> tokensList, String numBuffer)
 	{
@@ -260,11 +261,11 @@ public class ExpressionParser
 
 	/**
 	 * Implicit multiplication should be added in the following situations:
-	 * - {VarNode}, {NumNode}
-	 * - {NumNode}, {VarNode}
-	 * - {NumNode/VarNode}, {UnaryNode/CalculusNode}
-	 * - {VarNode}, {VarNode}
-	 * - {NumNode/VarNode}, {ParenthesisNode.left}
+	 * - {node.VarNode}, {node.NumNode}
+	 * - {node.NumNode}, {node.VarNode}
+	 * - {node.NumNode/node.VarNode}, {node.UnaryNode/node.CalculusNode}
+	 * - {node.VarNode}, {node.VarNode}
+	 * - {node.NumNode/node.VarNode}, {ParenthesisNode.left}
 	 *
 	 * TODO All other implicit multiplication situations will be considered illegal and throw
 	 * an Exception.
@@ -457,7 +458,7 @@ public class ExpressionParser
 		 * A ParenthesisNode should not exist in the ExpressionTree
 		 */
 		@Override
-		protected double eval(Map<String, Double> env)
+		public double eval(Map<String, Double> env)
 		{
 			throw new IllegalCallerException("ParenthesisNode's eval() method should not be called.");
 		}

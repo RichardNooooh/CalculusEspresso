@@ -1,3 +1,4 @@
+package node;
 
 import java.util.Map;
 
@@ -12,7 +13,7 @@ public class BinaryNode extends OperatorNode
 	}
 
 	@Override
-	protected double eval(Map<String, Double> env)
+	public double eval(Map<String, Double> env)
 	{
 		double leftVal = left.eval(env);
 		double rightVal = right.eval(env);

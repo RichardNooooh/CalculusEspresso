@@ -1,3 +1,4 @@
+import node.Operator;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.ThrowingConsumer;
 
@@ -431,7 +432,7 @@ public class ExpressionParserTest
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 	class infixToPostFixTest
 	{
-		//LinkedList<Node> tokens;
+		//LinkedList<node.Node> tokens;
 		Method method;
 
 		@BeforeEach

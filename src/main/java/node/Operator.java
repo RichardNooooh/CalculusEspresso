@@ -1,3 +1,4 @@
+package node;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,7 +89,7 @@ public enum Operator
 	}
 
 	/**
-	 * @return a Character, Operator HashMap of all operators
+	 * @return a Character, node.Operator HashMap of all operators
 	 */
 	public static HashMap<Character, Operator> getRawCharList()
 	{

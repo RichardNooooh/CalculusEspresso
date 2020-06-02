@@ -1,3 +1,4 @@
+package node;
 
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class WallNode extends Node
 
 	//shouldn't be evaluated
 	@Override
-	protected double eval(Map<String, Double> env)
+	public double eval(Map<String, Double> env)
 	{
 		return 0;
 	}

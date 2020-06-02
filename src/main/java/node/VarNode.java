@@ -1,3 +1,4 @@
+package node;
 
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public class VarNode extends OperandNode
 	}
 
 	@Override
-	protected double eval(Map<String, Double> env)
+	public double eval(Map<String, Double> env)
 	{
 		double thisVal = env.get(variable + "");
 		return thisVal;

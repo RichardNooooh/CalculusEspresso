@@ -1,3 +1,4 @@
+package node;
 
 import java.util.Map;
 
@@ -12,7 +13,7 @@ public class CalculusNode extends OperatorNode
 	private final int h = 0;
 
 	/**
-	 * Calculus Node Constructor
+	 * Calculus node.Node Constructor
 	 * @param cOperator is a calculus operator.
 	 */
 	public CalculusNode(Operator cOperator)
@@ -26,7 +27,7 @@ public class CalculusNode extends OperatorNode
 	 * @return the result of the operation
 	 */
 	@Override
-	protected double eval(Map<String, Double> env)
+	public double eval(Map<String, Double> env)
 	{
 		double val = right.eval(env);
 //		double input = left.eval(env);

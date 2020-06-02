@@ -1,4 +1,6 @@
 
+import node.*;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -48,7 +50,7 @@ public class ExpressionTree
 			}
 			else if (n instanceof WallNode)
 			{
-				//n must be Unary/Calculus Node
+				//n must be Unary/Calculus node.Node
 				//assume wall notation implementation
 				LinkedList<Node> innerExpression = new LinkedList<Node>();
 				Node nextNode = null;
