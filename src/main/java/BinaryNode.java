@@ -12,7 +12,7 @@ public class BinaryNode extends OperatorNode
 	}
 
 	@Override
-	protected double eval(Map<Character, Double> env)
+	protected double eval(Map<String, Double> env)
 	{
 		double leftVal = left.eval(env);
 		double rightVal = right.eval(env);

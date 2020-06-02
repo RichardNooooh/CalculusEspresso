@@ -10,11 +10,11 @@ import java.util.Stack;
 public class ExpressionTree
 {
 	Node root;
+	ExpressionParser parser;
 
-	public ExpressionTree(String expression)
-	{
+	public ExpressionTree(String expression) {
 		//TODO isPostfix boolean assumed to be true for now.
-		ExpressionParser parser = new ExpressionParser(expression, true);
+		parser = new ExpressionParser(expression, true);
 		LinkedList<Node> tokens = parser.getTokens();
 		root = setTree(tokens);
 	}
@@ -22,6 +22,11 @@ public class ExpressionTree
 	public ExpressionTree(LinkedList<Node> tokens)
 	{
 		setTree(tokens);
+	}
+
+	public ExpressionParser getParser()
+	{
+		return parser;
 	}
 
 	private Node setTree(LinkedList<Node> tokens)
@@ -76,7 +81,7 @@ public class ExpressionTree
 		return values.pop();
 	}
 
-	public double evaluate(HashMap<Character, Double> variableValues)
+	public double evaluate(HashMap<String, Double> variableValues)
 	{
 		return root.eval(variableValues);
 	}

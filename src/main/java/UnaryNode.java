@@ -11,7 +11,7 @@ public class UnaryNode extends OperatorNode
 	}
 
 	@Override
-	protected double eval(Map<Character, Double> env)
+	protected double eval(Map<String, Double> env)
 	{
 		double val = right.eval(env);
 

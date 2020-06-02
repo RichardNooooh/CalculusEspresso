@@ -21,7 +21,7 @@ public abstract class Node
 		this.right = right;
 	}
 
-	protected abstract double eval(Map<Character, Double> env); //TODO do I need... this env parameter? Can I factor it out?
+	protected abstract double eval(Map<String, Double> env); //TODO do I need... this env parameter? Can I factor it out?
 
 	//TODO add general tree traversal methods
 }

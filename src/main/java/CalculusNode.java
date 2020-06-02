@@ -26,7 +26,7 @@ public class CalculusNode extends OperatorNode
 	 * @return the result of the operation
 	 */
 	@Override
-	protected double eval(Map<Character, Double> env)
+	protected double eval(Map<String, Double> env)
 	{
 		double val = right.eval(env);
 //		double input = left.eval(env);

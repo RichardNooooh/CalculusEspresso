@@ -36,7 +36,7 @@ public class NumNode extends OperandNode {
     }
 
     @Override
-    protected double eval(Map<Character, Double> env) {
+    protected double eval(Map<String, Double> env) {
         return val;
     }
 }

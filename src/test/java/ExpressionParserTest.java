@@ -5,7 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -154,26 +153,46 @@ public class ExpressionParserTest
 		}
 
 		@TestFactory
-		@DisplayName("When given an expression String with no whitespace")
-		public Stream<DynamicTest> additiveParseTest()
+		@DisplayName("When given a single token")
+		public Stream<DynamicTest> singleTokenParseTest()
 		{
 			List<String> inputExpressionList = Arrays.asList(
-					"a+b+3-2",
-					"(-3)+1-4-5",
-					"169-5+3+4+52-60+(-3)",
-					"-1-1-1-1-1-1",
-					"-1+-1-1+-1-1--1",
-					"1.00+3+5.09-2+(-4.165)",
-					""
+					"1",
+					"123",
+					"150.2",
+					".085",
+					"96.99905",
+					"x",
+					"y",
+					"+",
+					"-",
+					"*",
+					"/",
+					"^",
+					"",
+					" ",
+					"\t",
+					"\n",
+					" \n\t"
 			);
 
 			List<String> expectedList = Arrays.asList(
-					"[a, +, b, +, 3.0, -, 2.0]",
-					"[(, -3.0, ), +, 1.0, -, 4.0, -, 5.0]",
-					"[169.0, -, 5.0, +, 3.0, +, 4.0, +, 52.0, -, 60.0, +, (, -3.0, )]",
-					"[-1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0]",
-					"[-1.0, +, -1.0, -, 1.0, +, -1.0, -, 1.0, -, -1.0]",
-					"[1.0, +, 3.0, +, 5.09, -, 2.0, +, (, -4.165, )]",
+					"[1.0]",
+					"[123.0]",
+					"[150.2]",
+					"[0.085]",
+					"[96.99905]",
+					"[x]",
+					"[y]",
+					"[+]",
+					"[-]",
+					"[*]",
+					"[/]",
+					"[^]",
+					"[]",
+					"[]",
+					"[]",
+					"[]",
 					"[]"
 			);
 
@@ -189,113 +208,221 @@ public class ExpressionParserTest
 			return DynamicTest.stream(inputGen, displayNameGen, testExecutor);
 		}
 
-		@TestFactory
-		@DisplayName("When given an expression String with even spacing")
-		public Stream<DynamicTest> additiveEvenSpaceParseTest()
+		@Nested
+		@DisplayName("When given a binary operator expression")
+		class binaryTest
 		{
-			List<String> inputExpressionList = Arrays.asList(
-					"a + b + 3 - 2",
-					"( -3 ) + 1 - 4 - 5",
-					"169 - 5 + 3 + 4 + 52 - 60 + ( -3 )",
-					"-1 - 1 - 1 - 1 - 1 - 1",
-					"-1 + -1 - 1 + -1 - 1 - -1",
-					"1.00 + 3 + 5.09 - 2 + ( -4.165 )",
-					" "
-			);
-
-			List<String> expectedList = Arrays.asList(
-					"[a, +, b, +, 3.0, -, 2.0]",
-					"[(, -3.0, ), +, 1.0, -, 4.0, -, 5.0]",
-					"[169.0, -, 5.0, +, 3.0, +, 4.0, +, 52.0, -, 60.0, +, (, -3.0, )]",
-					"[-1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0]",
-					"[-1.0, +, -1.0, -, 1.0, +, -1.0, -, 1.0, -, -1.0]",
-					"[1.0, +, 3.0, +, 5.09, -, 2.0, +, (, -4.165, )]",
-					"[]"
-			);
-
-			Iterator<String> inputGen = inputExpressionList.iterator();
-			Function<String, String> displayNameGen = (input) -> "Input: " + input;
-
-			ThrowingConsumer<String> testExecutor = (input) ->
+			@Nested
+			@DisplayName("When given an additive expression String")
+			class additiveParseTest
 			{
-				int i = inputExpressionList.indexOf(input);
-				assertEquals(expectedList.get(i), invokeExpr(input));
-			};
+				@TestFactory
+				@DisplayName("When given an additive expression String with no whitespace")
+				public Stream<DynamicTest> additiveNoSpaceParseTest()
+				{
+					List<String> inputExpressionList = Arrays.asList(
+							"1+1",
+							"1-1",
+							"159.26+.235",
+							"1.9-0.289",
+							"x+y",
+							"x-y",
+							"a+b+3-2",
+							"(-3)+1-4-5",
+							"169-5+3+4+52-60+(-3)",
+							"-1-1-1-1-1-1",
+							"-1+-1-1+-1-1--1",
+							"1.00+3+5.09-2+(-4.165)"
+					);
 
-			return DynamicTest.stream(inputGen, displayNameGen, testExecutor);
+					List<String> expectedList = Arrays.asList(
+							"[1.0, +, 1.0]",
+							"[1.0, -, 1.0]",
+							"[159.26, +, 0.235]",
+							"[1.9, -, 0.289]",
+							"[x, +, y]",
+							"[x, -, y]",
+							"[a, +, b, +, 3.0, -, 2.0]",
+							"[(, -3.0, ), +, 1.0, -, 4.0, -, 5.0]",
+							"[169.0, -, 5.0, +, 3.0, +, 4.0, +, 52.0, -, 60.0, +, (, -3.0, )]",
+							"[-1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0]",
+							"[-1.0, +, -1.0, -, 1.0, +, -1.0, -, 1.0, -, -1.0]",
+							"[1.0, +, 3.0, +, 5.09, -, 2.0, +, (, -4.165, )]"
+					);
+
+					Iterator<String> inputGen = inputExpressionList.iterator();
+					Function<String, String> displayNameGen = (input) -> "Input: " + input;
+
+					ThrowingConsumer<String> testExecutor = (input) ->
+					{
+						int i = inputExpressionList.indexOf(input);
+						assertEquals(expectedList.get(i), invokeExpr(input));
+					};
+
+					return DynamicTest.stream(inputGen, displayNameGen, testExecutor);
+				}
+
+				@TestFactory
+				@DisplayName("When given an additive expression String with even spacing")
+				public Stream<DynamicTest> additiveEvenSpaceParseTest()
+				{
+					List<String> inputExpressionList = Arrays.asList(
+							"a + b + 3 - 2",
+							"( -3 ) + 1 - 4 - 5",
+							"169 - 5 + 3 + 4 + 52 - 60 + ( -3 )",
+							"-1 - 1 - 1 - 1 - 1 - 1",
+							"-1 + -1 - 1 + -1 - 1 - -1",
+							"1.00 + 3 + 5.09 - 2 + ( -4.165 )"
+					);
+
+					List<String> expectedList = Arrays.asList(
+							"[a, +, b, +, 3.0, -, 2.0]",
+							"[(, -3.0, ), +, 1.0, -, 4.0, -, 5.0]",
+							"[169.0, -, 5.0, +, 3.0, +, 4.0, +, 52.0, -, 60.0, +, (, -3.0, )]",
+							"[-1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0]",
+							"[-1.0, +, -1.0, -, 1.0, +, -1.0, -, 1.0, -, -1.0]",
+							"[1.0, +, 3.0, +, 5.09, -, 2.0, +, (, -4.165, )]"
+					);
+
+					Iterator<String> inputGen = inputExpressionList.iterator();
+					Function<String, String> displayNameGen = (input) -> "Input: " + input;
+
+					ThrowingConsumer<String> testExecutor = (input) ->
+					{
+						int i = inputExpressionList.indexOf(input);
+						assertEquals(expectedList.get(i), invokeExpr(input));
+					};
+
+					return DynamicTest.stream(inputGen, displayNameGen, testExecutor);
+				}
+
+				@TestFactory
+				@DisplayName("When given an additive expression String with uneven spacing")
+				public Stream<DynamicTest> additiveUnevenSpaceParseTest()
+				{
+					List<String> inputExpressionList = Arrays.asList(
+							"a    +  b  + 3- 2",
+							"(      -   3 ) + 1 -    4  - 5",
+							"     169      - 5 + 3+ 4 + 52-60 + (-3 )",
+							"-1 - 1 - 1   - 1 -1-1",
+							"-1 + -1- 1   +     -1 - 1 --1",
+							"1.00 + 3 + 5.09- 2 +(-4.165 )"
+					);
+
+					List<String> expectedList = Arrays.asList(
+							"[a, +, b, +, 3.0, -, 2.0]",
+							"[(, -3.0, ), +, 1.0, -, 4.0, -, 5.0]",
+							"[169.0, -, 5.0, +, 3.0, +, 4.0, +, 52.0, -, 60.0, +, (, -3.0, )]",
+							"[-1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0]",
+							"[-1.0, +, -1.0, -, 1.0, +, -1.0, -, 1.0, -, -1.0]",
+							"[1.0, +, 3.0, +, 5.09, -, 2.0, +, (, -4.165, )]"
+					);
+
+					Iterator<String> inputGen = inputExpressionList.iterator();
+					Function<String, String> displayNameGen = (input) -> "Input: " + input;
+
+					ThrowingConsumer<String> testExecutor = (input) ->
+					{
+						int i = inputExpressionList.indexOf(input);
+						assertEquals(expectedList.get(i), invokeExpr(input));
+					};
+
+					return DynamicTest.stream(inputGen, displayNameGen, testExecutor);
+				}
+
+				@TestFactory
+				@DisplayName("When given an additive expression String with extreme whitespacing")
+				public Stream<DynamicTest> additiveBizarreSpaceParseTest()
+				{
+					List<String> inputExpressionList = Arrays.asList(
+							"a   \n +  b \t + 3- 2",
+							"(      -   3 ) \n+ 1 - \t\t   4  - 5",
+							"    \n 169 \t\t\t     - 5 + 3+ 4 + \t\t52\t-\t60 + (-3 )",
+							"-1 - 1 - 1   - 1 -1\t-1",
+							"-1 +\n -1- 1   +     -1 - 1 --\t1",
+							"1.00 + \n3 + \n5.09- 2 +(-4.165 \t)"
+					);
+
+					List<String> expectedList = Arrays.asList(
+							"[a, +, b, +, 3.0, -, 2.0]",
+							"[(, -3.0, ), +, 1.0, -, 4.0, -, 5.0]",
+							"[169.0, -, 5.0, +, 3.0, +, 4.0, +, 52.0, -, 60.0, +, (, -3.0, )]",
+							"[-1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0]",
+							"[-1.0, +, -1.0, -, 1.0, +, -1.0, -, 1.0, -, -1.0]",
+							"[1.0, +, 3.0, +, 5.09, -, 2.0, +, (, -4.165, )]"
+					);
+
+					Iterator<String> inputGen = inputExpressionList.iterator();
+					Function<String, String> displayNameGen = (input) -> "Input: " + input;
+
+					ThrowingConsumer<String> testExecutor = (input) ->
+					{
+						int i = inputExpressionList.indexOf(input);
+						assertEquals(expectedList.get(i), invokeExpr(input));
+					};
+
+					return DynamicTest.stream(inputGen, displayNameGen, testExecutor);
+				}
+			}
+
+
+			@TestFactory
+			@DisplayName("When given a multiplicative expression String with no whitespace")
+			public Stream<DynamicTest> multiplicativeNoSpaceParseTest()
+			{
+				List<String> inputExpressionList = Arrays.asList(
+						"a*b",
+						"1*1",
+						"a/b",
+						"-1*2",
+						"-1*-1",
+						"-a/-b",
+						"ab",
+						"12x",
+						"39.0x",
+						"x129",
+						"y989.0",
+						"",
+						"a*d*c*e/b",
+						"(-1)*b*c*-123",
+						"-1*b*c*-123",
+						"x*y*-1*-1*(-1)",
+						"(-1(-1(-1)*2))*39.0"
+				);
+
+				List<String> expectedList = Arrays.asList(
+						"a*b",
+						"1*1",
+						"a/b",
+						"-1*2",
+						"-1*-1",
+						"-a/-b",
+						"ab",
+						"12x",
+						"39.0x",
+						"x129",
+						"y989.0",
+						"",
+						"a*d*c*e/b",
+						"(-1)*b*c*-123",
+						"-1*b*c*-123",
+						"x*y*-1*-1*(-1)",
+						"(-1(-1(-1)*2))*39.0"
+				);
+
+				Iterator<String> inputGen = inputExpressionList.iterator();
+				Function<String, String> displayNameGen = (input) -> "Input: " + input;
+
+				ThrowingConsumer<String> testExecutor = (input) ->
+				{
+					int i = inputExpressionList.indexOf(input);
+					assertEquals(expectedList.get(i), invokeExpr(input));
+				};
+
+				return DynamicTest.stream(inputGen, displayNameGen, testExecutor);
+			}
 		}
 
-		@TestFactory
-		@DisplayName("When given an expression String with uneven spacing")
-		public Stream<DynamicTest> additiveUnevenSpaceParseTest()
-		{
-			List<String> inputExpressionList = Arrays.asList(
-					"a    +  b  + 3- 2",
-					"(      -   3 ) + 1 -    4  - 5",
-					"     169      - 5 + 3+ 4 + 52-60 + (-3 )",
-					"-1 - 1 - 1   - 1 -1-1",
-					"-1 + -1- 1   +     -1 - 1 --1",
-					"1.00 + 3 + 5.09- 2 +(-4.165 )",
-					"          "
-			);
-
-			List<String> expectedList = Arrays.asList(
-					"[a, +, b, +, 3.0, -, 2.0]",
-					"[(, -3.0, ), +, 1.0, -, 4.0, -, 5.0]",
-					"[169.0, -, 5.0, +, 3.0, +, 4.0, +, 52.0, -, 60.0, +, (, -3.0, )]",
-					"[-1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0]",
-					"[-1.0, +, -1.0, -, 1.0, +, -1.0, -, 1.0, -, -1.0]",
-					"[1.0, +, 3.0, +, 5.09, -, 2.0, +, (, -4.165, )]",
-					"[]"
-			);
-
-			Iterator<String> inputGen = inputExpressionList.iterator();
-			Function<String, String> displayNameGen = (input) -> "Input: " + input;
-
-			ThrowingConsumer<String> testExecutor = (input) ->
-			{
-				int i = inputExpressionList.indexOf(input);
-				assertEquals(expectedList.get(i), invokeExpr(input));
-			};
-
-			return DynamicTest.stream(inputGen, displayNameGen, testExecutor);
-		}
-
-		@TestFactory
-		@DisplayName("When given an expression String with extreme whitespacing")
-		public Stream<DynamicTest> additiveBizarreSpaceParseTest()
-		{
-			List<String> inputExpressionList = Arrays.asList(
-					"a   \n +  b \t + 3- 2",
-					"(      -   3 ) \n+ 1 - \t\t   4  - 5",
-					"    \n 169 \t\t\t     - 5 + 3+ 4 + \t\t52\t-\t60 + (-3 )",
-					"-1 - 1 - 1   - 1 -1\t-1",
-					"-1 +\n -1- 1   +     -1 - 1 --\t1",
-					"1.00 + \n3 + \n5.09- 2 +(-4.165 \t)",
-					"  \t\t\t\n\n\t        "
-			);
-
-			List<String> expectedList = Arrays.asList(
-					"[a, +, b, +, 3.0, -, 2.0]",
-					"[(, -3.0, ), +, 1.0, -, 4.0, -, 5.0]",
-					"[169.0, -, 5.0, +, 3.0, +, 4.0, +, 52.0, -, 60.0, +, (, -3.0, )]",
-					"[-1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0, -, 1.0]",
-					"[-1.0, +, -1.0, -, 1.0, +, -1.0, -, 1.0, -, -1.0]",
-					"[1.0, +, 3.0, +, 5.09, -, 2.0, +, (, -4.165, )]",
-					"[]"
-			);
-
-			Iterator<String> inputGen = inputExpressionList.iterator();
-			Function<String, String> displayNameGen = (input) -> "Input: " + input;
-
-			ThrowingConsumer<String> testExecutor = (input) ->
-			{
-				int i = inputExpressionList.indexOf(input);
-				assertEquals(expectedList.get(i), invokeExpr(input));
-			};
-
-			return DynamicTest.stream(inputGen, displayNameGen, testExecutor);
-		}
 
 	}
 
@@ -313,6 +440,44 @@ public class ExpressionParserTest
 			method = ExpressionParser.class.getDeclaredMethod("infixToPostfix", List.class);
 			method.setAccessible(true);
 		}
+
+		@TestFactory
+		@DisplayName("When given an infix expression tokens list")
+		public Stream<DynamicTest> additiveInfixParseTest()
+		{
+			//Note: This test relies on the parseToTokens method
+			List<String> inputExpressionList = Arrays.asList(
+					"a+b+3-2",
+					"(-3)+1-4-5",
+					"169-5+3+4+52-60+(-3)",
+					"-1-1-1-1-1-1",
+					"-1+-1-1+-1-1--1",
+					"1.00+3+5.09-2+(-4.165)",
+					""
+			);
+
+			List<String> expectedList = Arrays.asList(
+					"[a, b, 3.0, 2.0, -, +, +]",
+					"[-3.0, 1.0, 4.0, 5.0, -, -, +]",
+					"[169 5 3 4 52 60 -3]",
+					"[-1-1-1-1-1-1]",
+					"[-1+-1-1+-1-1--1]",
+					"[1.00+3+5.09-2+(-4.165)]",
+					"[]"
+			);
+
+			Iterator<String> inputGen = inputExpressionList.iterator();
+			Function<String, String> displayNameGen = (input) -> "Input: " + input;
+
+			ThrowingConsumer<String> testExecutor = (input) ->
+			{
+				int i = inputExpressionList.indexOf(input);
+				assertEquals(expectedList.get(i), invokeExpr(input));
+			};
+
+			return DynamicTest.stream(inputGen, displayNameGen, testExecutor);
+		}
+
 
 		/**
 		 * Since the invoke method is very long for lambdas, invokeExpr simply shortens the method call.

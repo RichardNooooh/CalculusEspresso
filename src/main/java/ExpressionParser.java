@@ -8,23 +8,49 @@ import java.util.regex.Pattern;
  */
 public class ExpressionParser
 {
-	LinkedList<Node> tokens;
+	private LinkedList<Node> tokens;
+	private HashMap<String, Double> variableValueMap;
 
 	/**
 	 * Constructs a new ExpressionParser
 	 */
-	public ExpressionParser(String expression, boolean isPostfix)
+	public ExpressionParser(String inputString, boolean isPostfix)
 	{
+		String[] splitExpression = inputString.split(" ~~ ");
+		String expression = splitExpression[0];
+
 		expression = substituteMultiCharOp(expression);
 		tokens = parseToTokens(expression);
 
 		if (isPostfix)
 			tokens = infixToPostfix(tokens);
+
+		if (splitExpression.length == 2)
+		{
+			variableValueMap = new HashMap<String, Double>();
+			String variableString = splitExpression[1];
+			String[] variableList = variableString.split(" ");
+			for (String variableValueString : variableList)
+			{
+				if (variableValueString.length() > 0)
+				{
+					String[] variableValuePair = variableValueString.split("=");
+					String variable = variableValuePair[0];
+					Double value = Double.parseDouble(variableValuePair[1]);
+					variableValueMap.put(variable, value);
+				}
+			}
+		}
 	}
 
 	public LinkedList<Node> getTokens()
 	{
 		return tokens;
+	}
+
+	public HashMap<String, Double> getVariableValueMap()
+	{
+		return variableValueMap;
 	}
 
 	/**
@@ -431,7 +457,7 @@ public class ExpressionParser
 		 * A ParenthesisNode should not exist in the ExpressionTree
 		 */
 		@Override
-		protected double eval(Map<Character, Double> env)
+		protected double eval(Map<String, Double> env)
 		{
 			throw new IllegalCallerException("ParenthesisNode's eval() method should not be called.");
 		}
