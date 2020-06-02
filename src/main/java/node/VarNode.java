@@ -1,5 +1,7 @@
 package node;
 
+import exceptions.UndefinedVariable;
+
 import java.util.Map;
 
 /**
@@ -15,9 +17,10 @@ public class VarNode extends OperandNode
 	}
 
 	@Override
-	public double eval(Map<String, Double> env)
-	{
-		double thisVal = env.get(variable + "");
+	public double eval(Map<String, Double> env) throws UndefinedVariable {
+		Double thisVal = env.get(variable + "");
+		if (thisVal == null)
+			throw new UndefinedVariable("The variable: " + variable + " is not defined in the env.");
 		return thisVal;
 	}
 
