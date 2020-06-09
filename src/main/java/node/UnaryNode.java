@@ -1,5 +1,7 @@
 package node;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Map;
 
 /**
@@ -13,20 +15,20 @@ public class UnaryNode extends OperatorNode
 	}
 
 	@Override
-	public double eval(Map<String, Double> env)
+	public BigDecimal eval(Map<String, BigDecimal> env)
 	{
-		double val = right.eval(env);
+		BigDecimal val = right.eval(env);
 
 		switch(operator)
 		{
 			case SQUARE_ROOT:
-				return Math.sqrt(val);
+				return val.sqrt(new MathContext(10));
 			case LOGARITHM:
-				return Math.log(val);
+				return BigDecimal.ZERO; //TODO use Newton's method
 			case NEGATIVE:
-				return -val;
+				return val.negate();
 			default:
-				return 0;
+				return BigDecimal.ZERO;
 		}
 	}
 }

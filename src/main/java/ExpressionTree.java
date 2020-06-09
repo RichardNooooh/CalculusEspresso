@@ -1,6 +1,7 @@
 
 import node.*;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -83,9 +84,10 @@ public class ExpressionTree
 		return values.pop();
 	}
 
-	public double evaluate(HashMap<String, Double> variableValues)
+	public double evaluate(HashMap<String, BigDecimal> variableValues)
 	{
-		return root.eval(variableValues);
+		BigDecimal value = root.eval(variableValues);
+		return value.doubleValue();
 	}
 
 }

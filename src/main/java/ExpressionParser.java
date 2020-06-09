@@ -1,16 +1,16 @@
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Pattern;
 import node.*;
 
-//TODO this class should be used by the ExpressionTree
 /**
  * Parses a raw expression into tokens
  */
 public class ExpressionParser
 {
 	private LinkedList<Node> tokens;
-	private HashMap<String, Double> variableValueMap;
+	private HashMap<String, BigDecimal> variableValueMap;
 
 	/**
 	 * Constructs a new ExpressionParser
@@ -18,7 +18,7 @@ public class ExpressionParser
 	public ExpressionParser(String inputString, boolean isPostfix)
 	{
 		String[] splitExpression = inputString.split(" ~~ ");
-		variableValueMap = new HashMap<String, Double>();
+		variableValueMap = new HashMap<String, BigDecimal>();
 		String expression = splitExpression[0];
 
 		expression = substituteMultiCharOp(expression);
@@ -37,7 +37,7 @@ public class ExpressionParser
 				{
 					String[] variableValuePair = variableValueString.split("=");
 					String variable = variableValuePair[0];
-					Double value = Double.parseDouble(variableValuePair[1]);
+					BigDecimal value = BigDecimal.valueOf(Double.parseDouble(variableValuePair[1]));
 					variableValueMap.put(variable, value);
 				}
 			}
@@ -49,7 +49,7 @@ public class ExpressionParser
 		return tokens;
 	}
 
-	public HashMap<String, Double> getVariableValueMap()
+	public HashMap<String, BigDecimal> getVariableValueMap()
 	{
 		return variableValueMap;
 	}
@@ -165,7 +165,7 @@ public class ExpressionParser
 	private void clearNumBuffer(LinkedList<Node> tokensList, String numBuffer)
 	{
 		if (!numBuffer.isEmpty())
-			tokensList.add(new NumNode(Double.parseDouble(numBuffer)));
+			tokensList.add(new NumNode(new BigDecimal(numBuffer)));
 	}
 
 	/**
@@ -458,7 +458,7 @@ public class ExpressionParser
 		 * A ParenthesisNode should not exist in the ExpressionTree
 		 */
 		@Override
-		public double eval(Map<String, Double> env)
+		public BigDecimal eval(Map<String, BigDecimal> env)
 		{
 			throw new IllegalCallerException("ParenthesisNode's eval() method should not be called.");
 		}

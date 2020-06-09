@@ -1,5 +1,6 @@
 package node;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -22,8 +23,8 @@ public class WallNode extends Node
 
 	//shouldn't be evaluated
 	@Override
-	public double eval(Map<String, Double> env)
+	public BigDecimal eval(Map<String, BigDecimal> env)
 	{
-		return 0;
+		return BigDecimal.ZERO;
 	}
 }

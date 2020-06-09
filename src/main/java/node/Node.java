@@ -2,6 +2,7 @@ package node;
 
 import exceptions.UndefinedVariable;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -24,7 +25,7 @@ public abstract class Node
 		this.right = right;
 	}
 
-	public abstract double eval(Map<String, Double> env) throws UndefinedVariable; //TODO do I need... this env parameter? Can I factor it out?
+	public abstract BigDecimal eval(Map<String, BigDecimal> env); //TODO do I need... this env parameter? Can I factor it out?
 
 	//TODO add general tree traversal methods
 }

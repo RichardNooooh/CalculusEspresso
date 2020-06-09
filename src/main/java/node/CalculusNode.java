@@ -1,5 +1,8 @@
 package node;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +14,7 @@ public class CalculusNode extends OperatorNode
 	/**
 	 * 'h' is the del-x value of the calculus operations
 	 */
-	private static final double h = 0.0001;
+	private static final BigDecimal h = new BigDecimal("0.000000000000001");
 
 	/**
 	 * Calculus node.Node Constructor
@@ -28,10 +31,10 @@ public class CalculusNode extends OperatorNode
 	 * @return the result of the operation
 	 */
 	@Override
-	public double eval(Map<String, Double> env)
+	public BigDecimal eval(Map<String, BigDecimal> env)
 	{
-		double val = right.eval(env);
-//		double input = left.eval(env);
+		BigDecimal val = right.eval(env);
+//		BigDecimal input = left.eval(env);
 
 		switch(operator)
 		{
@@ -40,7 +43,7 @@ public class CalculusNode extends OperatorNode
 //			case INTEGRAL:
 //				return val;
 			default:
-				return 0;
+				return BigDecimal.ZERO;
 		}
 	}
 
@@ -48,22 +51,22 @@ public class CalculusNode extends OperatorNode
 	 * Calculates the derivative of the function to its right based on the value on its left.
 	 * @return the derivative
 	 */
-	private double evaluateDerivative(Map<String, Double> env)
+	private BigDecimal evaluateDerivative(Map<String, BigDecimal> env)
 	{
-		double atX = env.get("x");
-		double originalVal = right.eval(env);
+		BigDecimal atX = env.get("x");
+		BigDecimal originalVal = right.eval(env);
 
-		HashMap<String, Double> newEnv = new HashMap<String, Double>();
+		HashMap<String, BigDecimal> newEnv = new HashMap<String, BigDecimal>();
 		for (String str : env.keySet())
 		{
-			Double val = env.get(str);
+			BigDecimal val = env.get(str);
 			newEnv.put(str, val);
 		}
 
-		newEnv.put("x", atX + h);
-		double adjacentVal = right.eval(newEnv);
+		newEnv.put("x", atX.add(h));
+		BigDecimal adjacentVal = right.eval(newEnv);
 
-		return (adjacentVal - originalVal) / h;
+		return adjacentVal.subtract(originalVal).divide(h, 30, RoundingMode.HALF_UP);
 	}
 
 }

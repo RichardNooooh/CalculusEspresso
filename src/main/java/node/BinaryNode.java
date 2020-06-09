@@ -1,5 +1,6 @@
 package node;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -13,25 +14,25 @@ public class BinaryNode extends OperatorNode
 	}
 
 	@Override
-	public double eval(Map<String, Double> env)
+	public BigDecimal eval(Map<String, BigDecimal> env)
 	{
-		double leftVal = left.eval(env);
-		double rightVal = right.eval(env);
+		BigDecimal leftVal = left.eval(env);
+		BigDecimal rightVal = right.eval(env);
 
 		switch(operator)
 		{
 			case ADDITION:
-				return leftVal + rightVal;
+				return leftVal.add(rightVal);
 			case SUBTRACTION:
-				return leftVal - rightVal;
+				return leftVal.subtract(rightVal);
 			case MULTIPLICATION:
-				return leftVal * rightVal;
+				return leftVal.multiply(rightVal);
 			case DIVISION:
-				return leftVal / rightVal;
+				return leftVal.divide(rightVal);
 			case EXPONENTIAL:
-				return Math.pow(leftVal, rightVal);
+				return BigDecimal.ZERO; //TODO this does not work yet, pow() only works with integer exponents
 			default:
-				return 0;
+				return BigDecimal.ZERO;
 		}
 	}
 

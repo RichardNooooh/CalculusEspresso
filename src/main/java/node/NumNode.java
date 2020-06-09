@@ -1,5 +1,6 @@
 package node;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -7,24 +8,24 @@ import java.util.Map;
  */
 public class NumNode extends OperandNode {
     //left and right nodes must be null
-    private double val;
+    private BigDecimal val;
 
     /**
      * Constructs a new node.NumNode
      */
-    public NumNode(double value) {
+    public NumNode(BigDecimal value) {
         val = value;
     }
 
     public void setNeg()
     {
-        val = -val;
+        val = val.negate();
     }
 
     /**
      * @return the value this node contains
      */
-    public double getVal() {
+    public BigDecimal getVal() {
         return val;
     }
 
@@ -37,7 +38,7 @@ public class NumNode extends OperandNode {
     }
 
     @Override
-    public double eval(Map<String, Double> env) {
+    public BigDecimal eval(Map<String, BigDecimal> env) {
         return val;
     }
 }
