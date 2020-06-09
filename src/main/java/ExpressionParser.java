@@ -18,6 +18,7 @@ public class ExpressionParser
 	public ExpressionParser(String inputString, boolean isPostfix)
 	{
 		String[] splitExpression = inputString.split(" ~~ ");
+		variableValueMap = new HashMap<String, Double>();
 		String expression = splitExpression[0];
 
 		expression = substituteMultiCharOp(expression);
@@ -28,7 +29,6 @@ public class ExpressionParser
 
 		if (splitExpression.length == 2)
 		{
-			variableValueMap = new HashMap<String, Double>();
 			String variableString = splitExpression[1];
 			String[] variableList = variableString.split(" ");
 			for (String variableValueString : variableList)

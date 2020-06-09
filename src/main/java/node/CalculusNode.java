@@ -1,5 +1,6 @@
 package node;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -10,7 +11,7 @@ public class CalculusNode extends OperatorNode
 	/**
 	 * 'h' is the del-x value of the calculus operations
 	 */
-	private final int h = 0;
+	private static final double h = 0.0001;
 
 	/**
 	 * Calculus node.Node Constructor
@@ -35,7 +36,7 @@ public class CalculusNode extends OperatorNode
 		switch(operator)
 		{
 			case DERIVATIVE:
-				return val;
+				return evaluateDerivative(env);
 //			case INTEGRAL:
 //				return val;
 			default:
@@ -47,9 +48,22 @@ public class CalculusNode extends OperatorNode
 	 * Calculates the derivative of the function to its right based on the value on its left.
 	 * @return the derivative
 	 */
-	private double evaluateDerivative()
+	private double evaluateDerivative(Map<String, Double> env)
 	{
-		return 0;
+		double atX = env.get("x");
+		double originalVal = right.eval(env);
+
+		HashMap<String, Double> newEnv = new HashMap<String, Double>();
+		for (String str : env.keySet())
+		{
+			Double val = env.get(str);
+			newEnv.put(str, val);
+		}
+
+		newEnv.put("x", atX + h);
+		double adjacentVal = right.eval(newEnv);
+
+		return (adjacentVal - originalVal) / h;
 	}
 
 }
