@@ -120,6 +120,20 @@ public enum Operator
 	}
 
 	/**
+	 * Return the Operator for the given character
+	 * Null, if there is no operator for the given character
+	 */
+	public static Operator getOperator(char c)
+	{
+		for (Operator op : values())
+		{
+			if (op.getChar() == c)
+				return op;
+		}
+		return null;
+	}
+
+	/**
 	 * Returns the type of operation, like Unary or Binary
 	 */
 	public OperationType getType()
