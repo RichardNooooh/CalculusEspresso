@@ -15,13 +15,16 @@ public class CalculusNode extends OperatorNode
 	 */
 	private static final BigDecimal h = new BigDecimal("0.000000000000001");
 
+	private String params;
+
 	/**
 	 * Calculus node.Node Constructor
 	 * @param cOperator is a calculus operator.
 	 */
-	public CalculusNode(Operator cOperator)
+	public CalculusNode(Operator cOperator, String params)
 	{
 		this.operator = cOperator;
+		this.params = params.strip();
 	}
 
 	/**
@@ -38,7 +41,7 @@ public class CalculusNode extends OperatorNode
 		switch(operator)
 		{
 			case DERIVATIVE:
-				return evaluateDerivative(env);
+				return evaluateDerivative(env, params);
 //			case INTEGRAL:
 //				return val;
 			default:
@@ -50,9 +53,9 @@ public class CalculusNode extends OperatorNode
 	 * Calculates the derivative of the function to its right based on the value on its left.
 	 * @return the derivative
 	 */
-	private BigDecimal evaluateDerivative(Map<String, BigDecimal> env)
+	private BigDecimal evaluateDerivative(Map<String, BigDecimal> env, String variable)
 	{
-		BigDecimal atX = env.get("x");
+		BigDecimal atX = env.get(variable);
 		BigDecimal originalVal = right.eval(env);
 
 		HashMap<String, BigDecimal> newEnv = new HashMap<String, BigDecimal>();
@@ -62,7 +65,7 @@ public class CalculusNode extends OperatorNode
 			newEnv.put(str, val);
 		}
 
-		newEnv.put("x", atX.add(h));
+		newEnv.put(params, atX.add(h));
 		BigDecimal adjacentVal = right.eval(newEnv);
 
 		return adjacentVal.subtract(originalVal).divide(h, 30, RoundingMode.HALF_UP);

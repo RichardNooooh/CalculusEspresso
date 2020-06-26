@@ -1,7 +1,5 @@
 package node;
 
-import exceptions.UndefinedVariable;
-
 import java.math.BigDecimal;
 import java.util.Map;
 
