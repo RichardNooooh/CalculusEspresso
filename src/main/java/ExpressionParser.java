@@ -2,6 +2,8 @@
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Pattern;
+
+import exceptions.MissingInputException;
 import node.*;
 
 /**
@@ -36,7 +38,7 @@ public class ExpressionParser
 				if (variableValueString.length() > 0)
 				{
 					String[] variableValuePair = variableValueString.split("=");
-					String variable = variableValuePair[0];
+					String variable = (variableValuePair[0].toCharArray())[0] + ""; //TODO
 					BigDecimal value = BigDecimal.valueOf(Double.parseDouble(variableValuePair[1]));
 					variableValueMap.put(variable, value);
 				}
@@ -144,7 +146,9 @@ public class ExpressionParser
 						tokensList.add(new ParenthesisNode(c));
 					else
 					{
-						boolean isOperator = matchOperators(tokensList, c);
+						boolean isOperator = false;
+						i = matchCalculusOperators(tokensList, expressionCharArray, i);
+						isOperator = matchUnaryBinaryOperators(tokensList, c);
 						if (!isOperator)
 							tokensList.add(new VarNode(c));
 					}
@@ -169,13 +173,79 @@ public class ExpressionParser
 	}
 
 	/**
-	 * Adds the current character into the tokens list as an operator if possible and return true.
-	 * Otherwise, return false.
+	 * Adds the current character into the tokens list as a calculus node if possible.
+	 *
+	 * @param tokensList is the list that is added to if the current character is an operator
+	 * @param expressionCharArray is the expression
+	 * @param i is the index that the initial tokenizer method is currently on
+	 * @return The new index for i after iterating through the calculus input. Adds the calculus node into tokensList
+	 * 		   if possible.
+	 */
+	private int matchCalculusOperators(LinkedList<Node> tokensList, char[] expressionCharArray, int i)
+	{
+		final int EXPRESSION_LENGTH = expressionCharArray.length;
+
+		char c = expressionCharArray[i];
+		Operator op = Operator.getOperator(c);
+		if (op != null && op.getType() == OperationType.CALCULUS)
+		{
+			i++;
+			if (expressionCharArray[i++] != '[')
+				throw new MissingInputException("Calculus operators like \"der\" require an input.)");
+
+			int sizeOfInputArray = findSizeOfCalculusInput(expressionCharArray, i);
+			char[] calculusInputArray = new char[sizeOfInputArray];
+
+			int indexInCalculusInput = 0;
+			while (i < EXPRESSION_LENGTH && expressionCharArray[i] != ']')
+				calculusInputArray[indexInCalculusInput++] = expressionCharArray[i++];
+
+			String calculusInputString = new String(calculusInputArray).strip();
+			switch(op)
+			{
+				case DERIVATIVE:
+					tokensList.add(new CalculusNode(Operator.DERIVATIVE, calculusInputString));
+					break;
+				case INTEGRAL:
+					tokensList.add(new CalculusNode(Operator.INTEGRAL, calculusInputString));
+					break;
+			}
+		}
+		return i;
+	}
+
+	/**
+	 * Determines the true size of the calculus parameter input.
+	 * @param expressionCharArray is the expression
+	 * @param i is the index that the tokenizer is currently on
+	 * @return
+	 *
+	 * @throws MissingInputException if there is not a closing ']' on the input.
+	 */
+	private int findSizeOfCalculusInput(char[] expressionCharArray, int i)
+	{
+		final int expressionLength = expressionCharArray.length;
+		int result = 0;
+		int tempI = i;
+		while (tempI < expressionLength && expressionCharArray[tempI] != ']')
+		{
+			result++;
+			tempI++;
+		}
+
+		if (tempI == expressionLength && expressionCharArray[tempI - 1] != ']')
+			throw new MissingInputException("Calculus input is missing a \"]\".");
+		return result;
+	}
+
+	/**
+	 * Adds the current character into the tokens list as a binary/unary operator if possible
+	 * and return true. Otherwise, return false.
 	 *
 	 * @param c is the current character of the expression string
 	 * @return If c was added into tokens, return true. Else, return false
 	 */
-	private boolean matchOperators(LinkedList<Node> tokensList, char c)
+	private boolean matchUnaryBinaryOperators(LinkedList<Node> tokensList, char c)
 	{
 		for (Operator op : Operator.values())
 		{
@@ -193,10 +263,10 @@ public class ExpressionParser
 						UnaryNode uNode = new UnaryNode(op);
 						tokensList.add(uNode);
 						break;
-					case CALCULUS:
-						CalculusNode cNode = new CalculusNode(op);
-						tokensList.add(cNode);
-						break;
+//					case CALCULUS:
+//						CalculusNode cNode = new CalculusNode(op);
+//						tokensList.add(cNode);
+//						break;
 				}
 				return true;
 			}

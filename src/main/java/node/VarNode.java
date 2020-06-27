@@ -1,6 +1,6 @@
 package node;
 
-import exceptions.UndefinedVariable;
+import exceptions.UndefinedVariableException;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -18,10 +18,10 @@ public class VarNode extends OperandNode
 	}
 
 	@Override
-	public BigDecimal eval(Map<String, BigDecimal> env) throws UndefinedVariable {
+	public BigDecimal eval(Map<String, BigDecimal> env) throws UndefinedVariableException {
 		BigDecimal thisVal = env.get(variable + "");
 		if (thisVal == null)
-			throw new UndefinedVariable("The variable: " + variable + " is not defined in the env.");
+			throw new UndefinedVariableException("The variable: " + variable + " is not defined in the env.");
 		return thisVal;
 	}
 
