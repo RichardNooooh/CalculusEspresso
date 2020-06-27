@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 public class BigFunctionsPlus
 {
-    final static int SCALE = 10;
+    final static int SCALE = 30;
 
     /**
      * Compute the value x^y

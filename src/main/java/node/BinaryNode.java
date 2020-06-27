@@ -2,7 +2,8 @@ package node;
 
 import java.math.BigDecimal;
 import java.util.Map;
-import org.nevec.rjm.BigDecimalMath;
+
+import util.BigFunctionsPlus;
 
 /**
  * Supports all binary operations within the expression tree
@@ -31,7 +32,7 @@ public class BinaryNode extends OperatorNode
 			case DIVISION:
 				return leftVal.divide(rightVal);
 			case EXPONENTIAL:
-				return BigDecimalMath.pow(leftVal, rightVal);
+				return BigFunctionsPlus.pow(leftVal, rightVal);
 			default:
 				return BigDecimal.ZERO;
 		}
