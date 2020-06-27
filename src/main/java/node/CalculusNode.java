@@ -68,7 +68,7 @@ public class CalculusNode extends OperatorNode
 		newEnv.put(params, atX.add(h));
 		BigDecimal adjacentVal = right.eval(newEnv);
 
-		return (adjacentVal.subtract(originalVal)).divide(h, 3000, RoundingMode.HALF_UP);
+		return (adjacentVal.subtract(originalVal)).divide(h, 30, RoundingMode.HALF_UP);
 	}
 
 }
