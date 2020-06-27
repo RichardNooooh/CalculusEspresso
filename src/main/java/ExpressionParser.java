@@ -38,7 +38,7 @@ public class ExpressionParser
 				if (variableValueString.length() > 0)
 				{
 					String[] variableValuePair = variableValueString.split("=");
-					String variable = variableValuePair[0];
+					String variable = (variableValuePair[0].toCharArray())[0] + ""; //TODO
 					BigDecimal value = BigDecimal.valueOf(Double.parseDouble(variableValuePair[1]));
 					variableValueMap.put(variable, value);
 				}
@@ -193,13 +193,12 @@ public class ExpressionParser
 			if (expressionCharArray[i++] != '[')
 				throw new MissingInputException("Calculus operators like \"der\" require an input.)");
 
-			char[] calculusInputArray = new char[EXPRESSION_LENGTH];
+			int sizeOfInputArray = findSizeOfCalculusInput(expressionCharArray, i);
+			char[] calculusInputArray = new char[sizeOfInputArray];
+
 			int indexInCalculusInput = 0;
 			while (i < EXPRESSION_LENGTH && expressionCharArray[i] != ']')
 				calculusInputArray[indexInCalculusInput++] = expressionCharArray[i++];
-
-//			if (i == EXPRESSION_LENGTH)
-//				throw new MissingInputException("Calculus input is missing a \"]\".");
 
 			String calculusInputString = new String(calculusInputArray).strip();
 			switch(op)
@@ -213,6 +212,30 @@ public class ExpressionParser
 			}
 		}
 		return i;
+	}
+
+	/**
+	 * Determines the true size of the calculus parameter input.
+	 * @param expressionCharArray is the expression
+	 * @param i is the index that the tokenizer is currently on
+	 * @return
+	 *
+	 * @throws MissingInputException if there is not a closing ']' on the input.
+	 */
+	private int findSizeOfCalculusInput(char[] expressionCharArray, int i)
+	{
+		final int expressionLength = expressionCharArray.length;
+		int result = 0;
+		int tempI = i;
+		while (tempI < expressionLength && expressionCharArray[tempI] != ']')
+		{
+			result++;
+			tempI++;
+		}
+
+		if (tempI == expressionLength && expressionCharArray[tempI - 1] != ']')
+			throw new MissingInputException("Calculus input is missing a \"]\".");
+		return result;
 	}
 
 	/**
