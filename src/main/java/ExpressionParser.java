@@ -38,7 +38,7 @@ public class ExpressionParser
 				if (variableValueString.length() > 0)
 				{
 					String[] variableValuePair = variableValueString.split("=");
-					String variable = (variableValuePair[0].toCharArray())[0] + ""; //TODO
+					String variable = variableValuePair[0];
 					BigDecimal value = BigDecimal.valueOf(Double.parseDouble(variableValuePair[1]));
 					variableValueMap.put(variable, value);
 				}

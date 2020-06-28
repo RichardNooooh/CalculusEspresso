@@ -37,9 +37,6 @@ public class CalculusNode extends OperatorNode
 	@Override
 	public BigDecimal eval(Map<String, BigDecimal> env)
 	{
-//		BigDecimal val = right.eval(env);
-//		BigDecimal input = left.eval(env);
-
 		switch(operator)
 		{
 			case DERIVATIVE:
@@ -57,7 +54,9 @@ public class CalculusNode extends OperatorNode
 	 */
 	private BigDecimal evaluateDerivative(Map<String, BigDecimal> env)
 	{
-		BigDecimal atX = env.get(params);
+		String var = parseDerivativePoint(env);
+
+		BigDecimal atX = env.get(var);
 		BigDecimal originalVal = right.eval(env);
 
 		HashMap<String, BigDecimal> newEnv = new HashMap<String, BigDecimal>();
@@ -67,10 +66,23 @@ public class CalculusNode extends OperatorNode
 			newEnv.put(str, val);
 		}
 
-		newEnv.put(params, atX.add(h));
+		newEnv.put(var, atX.add(h));
 		BigDecimal adjacentVal = right.eval(newEnv);
 
 		return (adjacentVal.subtract(originalVal)).divide(h, 30, RoundingMode.HALF_UP);
+	}
+
+	/**
+	 * Parses the point at which the derivative is evaluated
+	 */
+	private String parseDerivativePoint(Map<String, BigDecimal> env)
+	{
+		String[] variableValuePair = params.split("=");
+		String variable = variableValuePair[0].strip();
+		BigDecimal value = BigDecimal.valueOf(Double.parseDouble(variableValuePair[1].strip()));
+		env.put(variable, value);
+
+		return variable;
 	}
 
 	/**
