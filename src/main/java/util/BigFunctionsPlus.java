@@ -16,6 +16,8 @@ public class BigFunctionsPlus
      */
     public static BigDecimal pow(BigDecimal x, BigDecimal y)
     {
+        if (x.doubleValue() == 0)
+            return BigDecimal.ZERO;
         return BigFunctions.exp(BigFunctions.ln(x, SCALE).multiply(y), SCALE);
     }
 }
