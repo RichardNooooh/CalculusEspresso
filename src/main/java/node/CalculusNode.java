@@ -37,7 +37,7 @@ public class CalculusNode extends OperatorNode
 	@Override
 	public BigDecimal eval(Map<String, BigDecimal> env)
 	{
-		BigDecimal val = right.eval(env);
+//		BigDecimal val = right.eval(env);
 //		BigDecimal input = left.eval(env);
 
 		switch(operator)
