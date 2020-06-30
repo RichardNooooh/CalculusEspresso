@@ -10,23 +10,20 @@ import java.util.Map;
 /**
  * Supports all calculus operations within the expression tree
  */
-public class CalculusNode extends FunctionNode
+public class CalculusNode extends ParameterFunctionNode
 {
 	/**
 	 * 'h' is the del-x value of the calculus operations
 	 */
 	private static final BigDecimal h = new BigDecimal("0.001");
 
-	private String params;
-
 	/**
 	 * Calculus node.Node Constructor
 	 * @param cOperator is a calculus operator.
 	 */
-	public CalculusNode(Operator cOperator, String params)
+	public CalculusNode(Operator cOperator, String parameters)
 	{
-		this.operator = cOperator;
-		this.params = params.strip();
+		super(cOperator, parameters);
 	}
 
 	/**
