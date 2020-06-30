@@ -35,6 +35,23 @@ public enum Operator
 		}
 	},
 
+	//Parameter Function Operations
+	LOGARITHM("log", (char) 210, OperationType.PARAMETER_FUNCTION, (byte) 3, true)
+	{
+		@Override
+		public String toString()
+		{
+			return "Logarithm";
+		}
+	},
+	ROOT("root", (char) 211, OperationType.PARAMETER_FUNCTION, (byte) 3, true)
+	{
+		@Override
+		public String toString()
+		{
+			return "Logarithm";
+		}
+	},
 	//Calculus Operations
 	DERIVATIVE("der", (char) 213, OperationType.CALCULUS, (byte) 4, true)
 	{
