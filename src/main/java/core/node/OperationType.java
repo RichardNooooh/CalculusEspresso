@@ -4,5 +4,7 @@ public enum OperationType
 {
 	BINARY,
 	UNARY,
-	CALCULUS;
+	CALCULUS,
+	PARAMETER_FUNCTION;
+
 }

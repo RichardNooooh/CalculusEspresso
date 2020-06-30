@@ -148,7 +148,7 @@ public class ExpressionParser
 					else
 					{
 						boolean isOperator = false;
-						i = matchCalculusOperators(tokensList, expressionCharArray, i);
+						i = matchParameterFuncOperators(tokensList, expressionCharArray, i);
 						isOperator = matchUnaryBinaryOperators(tokensList, c);
 						if (!isOperator)
 							tokensList.add(new VarNode(c));
@@ -182,13 +182,13 @@ public class ExpressionParser
 	 * @return The new index for i after iterating through the calculus input. Adds the calculus node into tokensList
 	 * 		   if possible.
 	 */
-	private int matchCalculusOperators(LinkedList<Node> tokensList, char[] expressionCharArray, int i)
+	private int matchParameterFuncOperators(LinkedList<Node> tokensList, char[] expressionCharArray, int i)
 	{
 		final int EXPRESSION_LENGTH = expressionCharArray.length;
 
 		char c = expressionCharArray[i];
 		Operator op = Operator.getOperator(c);
-		if (op != null && op.getType() == OperationType.CALCULUS)
+		if (op != null && (op.getType() == OperationType.CALCULUS || op.getType() == OperationType.PARAMETER_FUNCTION))
 		{
 			i++;
 			if (expressionCharArray[i++] != '[')
@@ -264,10 +264,6 @@ public class ExpressionParser
 						UnaryNode uNode = new UnaryNode(op);
 						tokensList.add(uNode);
 						break;
-//					case CALCULUS:
-//						CalculusNode cNode = new CalculusNode(op);
-//						tokensList.add(cNode);
-//						break;
 				}
 				return true;
 			}
@@ -440,7 +436,7 @@ public class ExpressionParser
 					}
 				}
 			}
-			else if (curNode instanceof UnaryNode || curNode instanceof CalculusNode)
+			else if (curNode instanceof FunctionNode)
 			{
 				LinkedList<Node> innerExpression = new LinkedList<Node>();
 				int leftParenCounter = 0;
