@@ -2,7 +2,6 @@
 import core.*;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Stack;
