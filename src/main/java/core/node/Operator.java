@@ -1,4 +1,4 @@
-package core;
+package core.node;
 
 import java.util.ArrayList;
 import java.util.HashMap;
