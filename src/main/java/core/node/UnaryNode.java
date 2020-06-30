@@ -1,4 +1,4 @@
-package node;
+package core.node;
 
 import util.tareknaj.BigFunctions;
 
@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Supports all unary operations within the expression tree
  */
-public class UnaryNode extends OperatorNode
+public class UnaryNode extends FunctionNode
 {
 	private final static int SCALE = 10;
 
@@ -27,7 +27,7 @@ public class UnaryNode extends OperatorNode
 		{
 			case SQUARE_ROOT:
 				return val.sqrt(new MathContext(10));
-			case LOGARITHM:
+			case NATURAL_LOGARITHM:
 				return BigFunctions.ln(val, SCALE);
 			case NEGATIVE:
 				return val.negate();

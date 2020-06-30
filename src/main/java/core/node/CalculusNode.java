@@ -1,4 +1,4 @@
-package node;
+package core.node;
 
 import exceptions.InvalidInputException;
 
@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Supports all calculus operations within the expression tree
  */
-public class CalculusNode extends OperatorNode
+public class CalculusNode extends FunctionNode
 {
 	/**
 	 * 'h' is the del-x value of the calculus operations

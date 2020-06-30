@@ -1,10 +1,11 @@
+package core;
 
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import core.node.*;
 import exceptions.MissingInputException;
-import node.*;
 
 /**
  * Parses a raw expression into tokens
@@ -15,7 +16,7 @@ public class ExpressionParser
 	private HashMap<String, BigDecimal> variableValueMap;
 
 	/**
-	 * Constructs a new ExpressionParser
+	 * Constructs a new node.ExpressionParser
 	 */
 	public ExpressionParser(String inputString, boolean isPostfix)
 	{
@@ -59,7 +60,7 @@ public class ExpressionParser
 	/**
 	 * Converts all multi-character operations into a single character
 	 * based on their corresponding enum val
-	 * Ex: sqrt -> ExpressionChar.SQUARE_ROOT
+	 * Ex: sqrt -> node.ExpressionChar.SQUARE_ROOT
 	 *
 	 * @param expression
 	 * @return condensed expression
@@ -147,7 +148,7 @@ public class ExpressionParser
 					else
 					{
 						boolean isOperator = false;
-						i = matchCalculusOperators(tokensList, expressionCharArray, i);
+						i = matchParameterFuncOperators(tokensList, expressionCharArray, i);
 						isOperator = matchUnaryBinaryOperators(tokensList, c);
 						if (!isOperator)
 							tokensList.add(new VarNode(c));
@@ -181,13 +182,13 @@ public class ExpressionParser
 	 * @return The new index for i after iterating through the calculus input. Adds the calculus node into tokensList
 	 * 		   if possible.
 	 */
-	private int matchCalculusOperators(LinkedList<Node> tokensList, char[] expressionCharArray, int i)
+	private int matchParameterFuncOperators(LinkedList<Node> tokensList, char[] expressionCharArray, int i)
 	{
 		final int EXPRESSION_LENGTH = expressionCharArray.length;
 
 		char c = expressionCharArray[i];
 		Operator op = Operator.getOperator(c);
-		if (op != null && op.getType() == OperationType.CALCULUS)
+		if (op != null && (op.getType() == OperationType.CALCULUS || op.getType() == OperationType.PARAMETER_FUNCTION))
 		{
 			i++;
 			if (expressionCharArray[i++] != '[')
@@ -263,10 +264,6 @@ public class ExpressionParser
 						UnaryNode uNode = new UnaryNode(op);
 						tokensList.add(uNode);
 						break;
-//					case CALCULUS:
-//						CalculusNode cNode = new CalculusNode(op);
-//						tokensList.add(cNode);
-//						break;
 				}
 				return true;
 			}
@@ -439,7 +436,7 @@ public class ExpressionParser
 					}
 				}
 			}
-			else if (curNode instanceof UnaryNode || curNode instanceof CalculusNode)
+			else if (curNode instanceof FunctionNode)
 			{
 				LinkedList<Node> innerExpression = new LinkedList<Node>();
 				int leftParenCounter = 0;
@@ -494,8 +491,8 @@ public class ExpressionParser
 		}
 
 		/**
-		 * Constructs a new ParenthesisNode object from a ExpressionChar
-		 * @param parenthesis is a ExpressionChar parenthesis enum
+		 * Constructs a new ParenthesisNode object from a node.ExpressionChar
+		 * @param parenthesis is a node.ExpressionChar parenthesis enum
 		 */
 		public ParenthesisNode(ExpressionChar parenthesis)
 		{

@@ -1,5 +1,6 @@
 
-import node.*;
+import core.*;
+import core.node.*;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -10,28 +11,28 @@ import java.util.Stack;
 /**
  * This is the primary calculator tree
  */
-public class ExpressionTree
+final public class ExpressionTree
 {
 	Node root;
 	ExpressionParser parser;
 
-	public ExpressionTree(String expression) {
+	/**
+	 * Constructs a new ExpressionTree object
+	 * @param expression is the String to build the expression tree
+	 */
+	public ExpressionTree(String expression)
+	{
 		//TODO isPostfix boolean assumed to be true for now.
 		parser = new ExpressionParser(expression, true);
 		LinkedList<Node> tokens = parser.getTokens();
 		root = setTree(tokens);
 	}
 
-	public ExpressionTree(LinkedList<Node> tokens)
-	{
-		setTree(tokens);
-	}
-
-	public ExpressionParser getParser()
-	{
-		return parser;
-	}
-
+	/**
+	 * Constructs the expression tree
+	 * @param tokens is the list of operators and operands in postfix notation
+	 * @return the root node of the tree
+	 */
 	private Node setTree(LinkedList<Node> tokens)
 	{
 		Stack<Node> values = new Stack<Node>();
@@ -84,9 +85,25 @@ public class ExpressionTree
 		return values.pop();
 	}
 
-	public double evaluate(HashMap<String, BigDecimal> variableValues)
+	/**
+	 * Evaluate the expression based on initial values
+	 * @return the value of the expression at the initial variable values, if applicable
+	 * @throws exceptions.UndefinedVariableException if the map is empty and needs those variables
+	 */
+	public double evaluate()
 	{
-		BigDecimal value = root.eval(variableValues);
+		BigDecimal value = root.eval(parser.getVariableValueMap());
+		return value.doubleValue();
+	}
+
+	/**
+	 * Evaluate the expression based on given values
+	 * @param variableMap is a map containing the variables and their corresponding BigDecimal values
+	 * @return the value of the expression at the given variable values, if applicable
+	 */
+	public double evaluate(HashMap<String, BigDecimal> variableMap)
+	{
+		BigDecimal value = root.eval(variableMap);
 		return value.doubleValue();
 	}
 

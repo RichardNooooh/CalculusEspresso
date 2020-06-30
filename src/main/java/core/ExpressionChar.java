@@ -1,3 +1,4 @@
+package core;
 
 /**
  * Stores the ASCII characters for all important values

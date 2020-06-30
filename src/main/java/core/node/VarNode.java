@@ -1,4 +1,4 @@
-package node;
+package core.node;
 
 import exceptions.UndefinedVariableException;
 
