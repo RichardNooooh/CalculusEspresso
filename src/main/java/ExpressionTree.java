@@ -27,11 +27,6 @@ public class ExpressionTree
 		setTree(tokens);
 	}
 
-	public ExpressionParser getParser()
-	{
-		return parser;
-	}
-
 	private Node setTree(LinkedList<Node> tokens)
 	{
 		Stack<Node> values = new Stack<Node>();
@@ -84,9 +79,9 @@ public class ExpressionTree
 		return values.pop();
 	}
 
-	public double evaluate(HashMap<String, BigDecimal> variableValues)
+	public double evaluate()
 	{
-		BigDecimal value = root.eval(variableValues);
+		BigDecimal value = root.eval(parser.getVariableValueMap());
 		return value.doubleValue();
 	}
 
