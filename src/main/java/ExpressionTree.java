@@ -99,7 +99,7 @@ final public class ExpressionTree
 	/**
 	 * Evaluate the expression based on given values
 	 * @param variableMap is a map containing the variables and their corresponding BigDecimal values
-	 * @return the value of the expresssion at the given variable values, if applicable
+	 * @return the value of the expression at the given variable values, if applicable
 	 */
 	public double evaluate(HashMap<String, BigDecimal> variableMap)
 	{
