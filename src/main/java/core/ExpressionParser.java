@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import core.node.*;
 import exceptions.MissingInputException;
+import util.ExpressionChar;
 
 /**
  * Parses a raw expression into tokens
@@ -147,9 +148,8 @@ public class ExpressionParser
 						tokensList.add(new ParenthesisNode(c));
 					else
 					{
-						boolean isOperator = false;
 						i = matchParameterFuncOperators(tokensList, expressionCharArray, i);
-						isOperator = matchUnaryBinaryOperators(tokensList, c);
+						boolean isOperator = matchUnaryBinaryOperators(tokensList, c);
 						if (!isOperator)
 							tokensList.add(new VarNode(c));
 					}
@@ -201,14 +201,20 @@ public class ExpressionParser
 			while (i < EXPRESSION_LENGTH && expressionCharArray[i] != ']')
 				calculusInputArray[indexInCalculusInput++] = expressionCharArray[i++];
 
-			String calculusInputString = new String(calculusInputArray).strip();
+			String parameterInputString = new String(calculusInputArray).strip();
 			switch(op)
 			{
+				case LOGARITHM:
+					tokensList.add(new ParameterFunctionNode(Operator.LOGARITHM, parameterInputString));
+					break;
+				case ROOT:
+					tokensList.add(new ParameterFunctionNode(Operator.ROOT, parameterInputString));
+					break;
 				case DERIVATIVE:
-					tokensList.add(new CalculusNode(Operator.DERIVATIVE, calculusInputString));
+					tokensList.add(new CalculusNode(Operator.DERIVATIVE, parameterInputString));
 					break;
 				case INTEGRAL:
-					tokensList.add(new CalculusNode(Operator.INTEGRAL, calculusInputString));
+					tokensList.add(new CalculusNode(Operator.INTEGRAL, parameterInputString));
 					break;
 			}
 		}
