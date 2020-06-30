@@ -65,7 +65,7 @@ final public class ExpressionTree
 					nextNode = tokenIterator.next();
 					innerExpression.add(nextNode);
 
-					if (nextNode instanceof UnaryNode || nextNode instanceof CalculusNode)
+					if (nextNode instanceof FunctionNode)
 					{
 						innerExpressionsCounter--;
 						if (innerExpressionsCounter == 0)
