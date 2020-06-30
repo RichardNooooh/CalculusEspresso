@@ -1,4 +1,4 @@
-package node;
+package core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,7 +111,7 @@ public enum Operator
 
 	/**
 	 * Return the substitution character for the operator.
-	 * Each substitution character is represented by the ExpressionChar
+	 * Each substitution character is represented by the node.ExpressionChar
 	 * enum.
 	 */
 	public char getChar()

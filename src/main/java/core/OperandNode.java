@@ -1,4 +1,4 @@
-package node;
+package core;
 
 /**
  * Represents the operands of the expression tree

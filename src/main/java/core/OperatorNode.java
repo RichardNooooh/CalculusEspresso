@@ -1,4 +1,4 @@
-package node;
+package core;
 
 /**
  * Represents all operations in the expression tree
