@@ -15,6 +15,7 @@ public enum Operator
 	MULTIPLICATION("*", (char) 42, OperationType.BINARY, (byte) 2, true),
 	DIVISION("/", (char) 47, OperationType.BINARY, (byte) 2, true),
 	EXPONENTIAL("^", (char) 94, OperationType.BINARY, (byte) 3, false),
+	MODULUS("%", (char) 37, OperationType.BINARY, (byte) 2, true),
 
 	//Unary Operations
 	NEGATIVE("-", (char) 45, OperationType.UNARY, (byte) 3, true),
