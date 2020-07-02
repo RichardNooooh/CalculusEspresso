@@ -1,6 +1,8 @@
 package core.node;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Map;
 
 import util.BigFunctionsPlus;
@@ -30,9 +32,11 @@ public class BinaryNode extends OperatorNode
 			case MULTIPLICATION:
 				return leftVal.multiply(rightVal);
 			case DIVISION:
-				return leftVal.divide(rightVal);
+				return leftVal.divide(rightVal, 30, RoundingMode.HALF_UP);
 			case EXPONENTIAL:
 				return BigFunctionsPlus.pow(leftVal, rightVal);
+			case MODULUS:
+				return leftVal.remainder(rightVal, new MathContext(10));
 			default:
 				return BigDecimal.ZERO;
 		}
