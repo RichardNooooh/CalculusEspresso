@@ -9,6 +9,7 @@ public class BigFunctionsPlus
 {
     public final static BigDecimal NEG_ONE = new BigDecimal(-1);
     public final static BigDecimal PI = new BigDecimal("3.14159265358979323846264338327950288419716939937511"); //50
+    public final static BigDecimal TAU = new BigDecimal("6.28318530717958647692528676655900576839433879875021"); //50
     public final static BigDecimal E = new BigDecimal("2.71828182845904523536028747135266249775724709369996"); //50
     final static int SCALE = 30;
     final static int N = 10;
@@ -87,12 +88,12 @@ public class BigFunctionsPlus
     public static BigDecimal cos(BigDecimal x)
     {
         //Limits the range of x to provide more accurate trigonometric values
-        x = x.remainder(PI);
+        x = x.remainder(TAU);
         BigDecimal sum = BigDecimal.ZERO;
         for (int i = 0; i < N; i++)
         {
-            BigDecimal sign = NEG_ONE.pow(i + 1);
-            BigDecimal coefficient = sign.divide(factorial(2 * i));
+            BigDecimal sign = NEG_ONE.pow(i);
+            BigDecimal coefficient = sign.divide(factorial(2 * i), SCALE, RoundingMode.HALF_UP);
             sum = sum.add(coefficient.multiply(x.pow(2 * i)));
         }
         return sum;
@@ -107,12 +108,12 @@ public class BigFunctionsPlus
     public static BigDecimal sin(BigDecimal x)
     {
         //Limits the range of x to provide more accurate trigonometric values
-        x = x.remainder(PI);
+        x = x.remainder(TAU);
         BigDecimal sum = BigDecimal.ZERO;
         for (int i = 0; i < N; i++)
         {
             BigDecimal sign = NEG_ONE.pow(i);
-            BigDecimal coefficient = sign.divide(factorial(2 * i + 1));
+            BigDecimal coefficient = sign.divide(factorial(2 * i + 1), SCALE, RoundingMode.HALF_UP);
             sum = sum.add(coefficient.multiply(x.pow(2 * i + 1)));
         }
         return sum;
