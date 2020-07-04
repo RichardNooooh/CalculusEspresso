@@ -53,6 +53,26 @@ public enum Operator
 			return "Logarithm";
 		}
 	},
+
+	//Trigonometric (unary) Operations
+	SIN("sin", (char) 212, OperationType.UNARY, (byte) 3, true)
+	{
+		@Override
+		public String toString()
+		{
+			return "Sine";
+		}
+	},
+	//Trigonometric (unary) Operations
+	COS("sin", (char) 213, OperationType.UNARY, (byte) 3, true)
+	{
+		@Override
+		public String toString()
+		{
+			return "Cosine";
+		}
+	},
+
 	//Calculus Operations
 	DERIVATIVE("der", (char) 213, OperationType.CALCULUS, (byte) 4, true)
 	{

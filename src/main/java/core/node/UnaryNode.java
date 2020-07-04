@@ -1,5 +1,6 @@
 package core.node;
 
+import util.BigFunctionsPlus;
 import util.tareknaj.BigFunctions;
 
 import java.math.BigDecimal;
@@ -26,11 +27,15 @@ public class UnaryNode extends FunctionNode
 		switch(operator)
 		{
 			case SQUARE_ROOT:
-				return val.sqrt(new MathContext(10));
+				return val.sqrt(new MathContext(SCALE));
 			case NATURAL_LOGARITHM:
 				return BigFunctions.ln(val, SCALE);
 			case NEGATIVE:
 				return val.negate();
+			case SIN:
+				return BigFunctionsPlus.sin(val);
+			case COS:
+				return BigFunctionsPlus.cos(val);
 			default:
 				return BigDecimal.ZERO;
 		}
