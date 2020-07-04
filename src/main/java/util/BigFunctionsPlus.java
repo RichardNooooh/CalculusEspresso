@@ -128,6 +128,7 @@ public class BigFunctionsPlus
      * Perhaps in a future version of this library, such a thing may be implemented.
      * @param x is the value of x
      * @return the value of tan(x)
+     * @throws IllegalArgumentException if the value of x is too close to an asymptote of tangent(x)
      */
     public static BigDecimal tan(BigDecimal x)
     {
@@ -146,6 +147,7 @@ public class BigFunctionsPlus
      * Perhaps in a future version of this library, such a thing may be implemented.
      * @param x is the value of x
      * @return the value of cot(x)
+     * @throws IllegalArgumentException if the value of x is too close to an asymptote of cotangent(x)
      */
     public static BigDecimal cot(BigDecimal x)
     {
