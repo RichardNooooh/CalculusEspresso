@@ -103,6 +103,22 @@ public enum Operator
 			return "Cosecant";
 		}
 	},
+	ARC_SIN("arcsin", (char) 218, OperationType.UNARY, (byte) 3, true)
+	{
+		@Override
+		public String toString()
+		{
+			return "Arcsine";
+		}
+	},
+	ARC_COS("arccos", (char) 219, OperationType.UNARY, (byte) 3, true)
+	{
+		@Override
+		public String toString()
+		{
+			return "Arccosine";
+		}
+	},
 
 	//Calculus Operations
 	DERIVATIVE("der", (char) 220, OperationType.CALCULUS, (byte) 4, true)

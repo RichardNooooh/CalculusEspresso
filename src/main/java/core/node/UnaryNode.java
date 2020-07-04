@@ -44,6 +44,10 @@ public class UnaryNode extends FunctionNode
 				return BigFunctionsPlus.sec(val);
 			case CSC:
 				return BigFunctionsPlus.csc(val);
+			case ARC_SIN:
+				return BigFunctionsPlus.arcsin(val);
+			case ARC_COS:
+				return BigFunctionsPlus.arccos(val);
 			default:
 				return BigDecimal.ZERO;
 		}
