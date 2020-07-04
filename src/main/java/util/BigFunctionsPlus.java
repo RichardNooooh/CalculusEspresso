@@ -12,6 +12,7 @@ public class BigFunctionsPlus
 
     public final static BigDecimal PI = new BigDecimal("3.14159265358979323846264338327950288419716939937511"); //50
     public final static BigDecimal PI_HALVES = PI.divide(TWO);
+    public final static BigDecimal THREE_PI_HALVES = new BigDecimal(3).multiply(PI_HALVES);
     public final static BigDecimal TAU = new BigDecimal("6.28318530717958647692528676655900576839433879875021"); //50
     public final static BigDecimal E = new BigDecimal("2.71828182845904523536028747135266249775724709369996"); //50
 
@@ -172,12 +173,14 @@ public class BigFunctionsPlus
      * Perhaps in a future version of this library, such a thing may be implemented.
      * @param x is the value of x
      * @return the value of sec(x)
-     * @throws IllegalArgumentException if the value of x is too close to an asymptote of secant(x)
+     * @throws IllegalArgumentException if the value of x is too close to an asymptote of secant(x): a multiple of
+     *                                  PI / 2 or 3PI / 2
      */
     public static BigDecimal sec(BigDecimal x)
     {
-        x = x.remainder(PI);
-        if (x.subtract(PI_HALVES).abs().compareTo(ASYMPTOTE_LIMIT) < 0)
+        x = x.remainder(TAU);
+        if (x.subtract(PI_HALVES).abs().compareTo(ASYMPTOTE_LIMIT) < 0 ||
+            x.subtract(THREE_PI_HALVES).abs().compareTo(ASYMPTOTE_LIMIT) < 0)
             throw new IllegalArgumentException("The value of x is too close to an asymptote in sec().");
         return BigDecimal.ONE.divide(cos(x), SCALE, RoundingMode.HALF_UP);
     }
@@ -191,12 +194,14 @@ public class BigFunctionsPlus
      * Perhaps in a future version of this library, such a thing may be implemented.
      * @param x is the value of x
      * @return the value of csc(x)
-     * @throws IllegalArgumentException if the value of x is too close to an asymptote of cosecant(x)
+     * @throws IllegalArgumentException if the value of x is too close to an asymptote of cosecant(x): 0 or a multiple
+     *                                  of PI
      */
     public static BigDecimal csc(BigDecimal x)
     {
-        x = x.remainder(PI);
-        if (x.subtract(BigDecimal.ZERO).abs().compareTo(ASYMPTOTE_LIMIT) < 0)
+        x = x.remainder(TAU);
+        if (x.subtract(BigDecimal.ZERO).abs().compareTo(ASYMPTOTE_LIMIT) < 0 ||
+            x.subtract(PI).abs().compareTo(ASYMPTOTE_LIMIT) < 0)
             throw new IllegalArgumentException("The value of x is too close to an asymptote in csc().");
         return BigDecimal.ONE.divide(sin(x), SCALE, RoundingMode.HALF_UP);
     }
