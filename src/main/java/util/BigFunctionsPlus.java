@@ -9,6 +9,7 @@ public class BigFunctionsPlus
 {
     public final static BigDecimal NEG_ONE = new BigDecimal(-1);
     final static int SCALE = 30;
+    final static int N = 10;
 
     /**
      * Compute the value x^y
@@ -84,7 +85,7 @@ public class BigFunctionsPlus
     public static BigDecimal cos(BigDecimal x)
     {
         BigDecimal sum = BigDecimal.ZERO;
-        for (int i = 0; i < SCALE; i++)
+        for (int i = 0; i < N; i++)
         {
             BigDecimal sign = NEG_ONE.pow(i + 1);
             BigDecimal coefficient = sign.divide(factorial(2 * i));
@@ -102,7 +103,7 @@ public class BigFunctionsPlus
     public static BigDecimal sin(BigDecimal x)
     {
         BigDecimal sum = BigDecimal.ZERO;
-        for (int i = 0; i < SCALE; i++)
+        for (int i = 0; i < N; i++)
         {
             BigDecimal sign = NEG_ONE.pow(i);
             BigDecimal coefficient = sign.divide(factorial(2 * i + 1));
