@@ -3,6 +3,7 @@ package util;
 import util.tareknaj.BigFunctions;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 
 public class BigFunctionsPlus
@@ -71,15 +72,15 @@ public class BigFunctionsPlus
      * @return the value of n factorial
      * @throws IllegalArgumentException if n < 0
      */
-    public static BigDecimal factorial(long n)
+    public static BigInteger factorial(long n)
     {
         if (n < 0)
             throw new IllegalArgumentException("factorial(long n) can not receive negative operators. The user " +
                     "should implement their own Gamma function for \"negative factorial\" values");
-        BigDecimal result = BigDecimal.ONE;
+        BigInteger result = BigInteger.ONE;
         while (n > 1)
         {
-            result = result.multiply(new BigDecimal(n));
+            result = result.multiply(new BigInteger(String.valueOf(n)));
             n--;
         }
 
@@ -100,7 +101,7 @@ public class BigFunctionsPlus
         for (int i = 0; i < N; i++)
         {
             BigDecimal sign = NEG_ONE.pow(i);
-            BigDecimal coefficient = divide(sign, factorial(2 * i));
+            BigDecimal coefficient = divide(sign, new BigDecimal(factorial(2 * i)));
             sum = sum.add(coefficient.multiply(x.pow(2 * i)));
         }
         return sum;
@@ -120,7 +121,7 @@ public class BigFunctionsPlus
         for (int i = 0; i < N; i++)
         {
             BigDecimal sign = NEG_ONE.pow(i);
-            BigDecimal coefficient = sign.divide(factorial(2 * i + 1), SCALE, RoundingMode.HALF_UP);
+            BigDecimal coefficient = divide(sign, new BigDecimal(factorial(2 * i + 1)));
             sum = sum.add(coefficient.multiply(x.pow(2 * i + 1)));
         }
         return sum;
@@ -204,6 +205,38 @@ public class BigFunctionsPlus
             x.subtract(PI).abs().compareTo(ASYMPTOTE_LIMIT) < 0)
             throw new IllegalArgumentException("The value of x is too close to an asymptote in csc().");
         return divide(BigDecimal.ONE, sin(x));
+    }
+
+    /**
+     * Compute the value of arcsin(x)
+     *      arcsin(x) = sum( (2i)! / (a * b * c) * x^c )
+     *              a = 4^i
+     *              b = (i!)^2
+     *              c = 2i + 1
+     *
+     * @param x is the value of x
+     * @return the value of arcsin(x)
+     * @throws IllegalArgumentException if the abs(x) > 1
+     */
+    public static BigDecimal arcsin(BigDecimal x)
+    {
+        if (x.abs().compareTo(BigDecimal.ONE) > 0)
+            throw new IllegalArgumentException("The input of arcsin(x) must be within -1 and 1, inclusive.");
+
+        BigDecimal sum = BigDecimal.ZERO;
+        for (int i = 0; i < N; i++)
+        {
+            BigDecimal numerator = new BigDecimal(factorial(2 * i));
+            BigDecimal a = new BigDecimal(Math.pow(4, i));
+            BigDecimal b = new BigDecimal(factorial(i).pow(2));
+            BigDecimal c = new BigDecimal(2 * i + 1);
+            BigDecimal coefficient = divide(numerator, a.multiply(b).multiply(c));
+            BigDecimal result = coefficient.multiply(pow(x, c));
+
+            sum = sum.add(result);
+        }
+
+        return sum;
     }
 
     /**
