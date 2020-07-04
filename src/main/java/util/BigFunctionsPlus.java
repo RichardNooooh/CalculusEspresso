@@ -240,6 +240,22 @@ public class BigFunctionsPlus
     }
 
     /**
+     * Compute the value of arccos(x)
+     *      arccos(x) = PI/2 - arcsin(x)
+     *
+     * @param x is the value of x
+     * @return the value of arccos(x)
+     * @throws IllegalArgumentException if the abs(x) > 1
+     */
+    public static BigDecimal arccos(BigDecimal x)
+    {
+        if (x.abs().compareTo(BigDecimal.ONE) > 0)
+            throw new IllegalArgumentException("The input of arccos(x) must be within -1 and 1, inclusive.");
+
+        return PI_HALVES.subtract(arcsin(x));
+    }
+
+    /**
      * Divides two BigDecimal values with the same SCALE and RoundingMode
      * @param numerator value of the numerator
      * @param denominator value of the denominator
