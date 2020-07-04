@@ -45,7 +45,7 @@ public class BigFunctionsPlus
     {
         if (x.compareTo(ASYMPTOTE_LIMIT) < 0 || n.compareTo(ASYMPTOTE_LIMIT) < 0)
             throw new IllegalArgumentException("The log() method cannot have a non-positive base or x");
-        return BigFunctions.ln(x, SCALE).divide(BigFunctions.ln(n, SCALE), SCALE, RoundingMode.HALF_UP);
+        return divide(BigFunctions.ln(x, SCALE), BigFunctions.ln(n, SCALE));
     }
 
     /**
@@ -61,7 +61,7 @@ public class BigFunctionsPlus
             throw new IllegalArgumentException("The root() method cannot have a 0 as its index, nor can it have" +
                     " a negative radicand.");
 
-        return pow(x, BigDecimal.ONE.divide(n, SCALE, RoundingMode.HALF_UP));
+        return pow(x, divide(BigDecimal.ONE, n));
     }
 
     /**
@@ -100,7 +100,7 @@ public class BigFunctionsPlus
         for (int i = 0; i < N; i++)
         {
             BigDecimal sign = NEG_ONE.pow(i);
-            BigDecimal coefficient = sign.divide(factorial(2 * i), SCALE, RoundingMode.HALF_UP);
+            BigDecimal coefficient = divide(sign, factorial(2 * i));
             sum = sum.add(coefficient.multiply(x.pow(2 * i)));
         }
         return sum;
@@ -142,7 +142,7 @@ public class BigFunctionsPlus
         x = x.remainder(PI);
         if (x.subtract(PI_HALVES).abs().compareTo(ASYMPTOTE_LIMIT) < 0)
             throw new IllegalArgumentException("The value of x is too close to an asymptote in tan().");
-        return sin(x).divide(cos(x), SCALE, RoundingMode.HALF_UP);
+        return divide(sin(x), cos(x));
     }
 
     /**
@@ -161,7 +161,7 @@ public class BigFunctionsPlus
         x = x.remainder(PI);
         if (x.subtract(BigDecimal.ZERO).abs().compareTo(ASYMPTOTE_LIMIT) < 0)
             throw new IllegalArgumentException("The value of x is too close to an asymptote in cot().");
-        return cos(x).divide(sin(x), SCALE, RoundingMode.HALF_UP);
+        return divide(cos(x), sin(x));
     }
 
     /**
@@ -182,7 +182,7 @@ public class BigFunctionsPlus
         if (x.subtract(PI_HALVES).abs().compareTo(ASYMPTOTE_LIMIT) < 0 ||
             x.subtract(THREE_PI_HALVES).abs().compareTo(ASYMPTOTE_LIMIT) < 0)
             throw new IllegalArgumentException("The value of x is too close to an asymptote in sec().");
-        return BigDecimal.ONE.divide(cos(x), SCALE, RoundingMode.HALF_UP);
+        return divide(BigDecimal.ONE, cos(x));
     }
 
     /**
@@ -203,7 +203,21 @@ public class BigFunctionsPlus
         if (x.subtract(BigDecimal.ZERO).abs().compareTo(ASYMPTOTE_LIMIT) < 0 ||
             x.subtract(PI).abs().compareTo(ASYMPTOTE_LIMIT) < 0)
             throw new IllegalArgumentException("The value of x is too close to an asymptote in csc().");
-        return BigDecimal.ONE.divide(sin(x), SCALE, RoundingMode.HALF_UP);
+        return divide(BigDecimal.ONE, sin(x));
+    }
+
+    /**
+     * Divides two BigDecimal values with the same SCALE and RoundingMode
+     * @param numerator value of the numerator
+     * @param denominator value of the denominator
+     * @return the value of numerator / denominator
+     * @throws ArithmeticException
+     */
+    public static BigDecimal divide(BigDecimal numerator, BigDecimal denominator)
+    {
+        if (denominator.compareTo(BigDecimal.ZERO) == 0)
+            throw new ArithmeticException("You can not divide by 0.");
+        return numerator.divide(denominator, SCALE, RoundingMode.HALF_UP);
     }
 }
 
