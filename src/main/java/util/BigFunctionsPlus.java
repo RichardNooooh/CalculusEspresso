@@ -8,6 +8,7 @@ import java.math.RoundingMode;
 public class BigFunctionsPlus
 {
     public final static BigDecimal NEG_ONE = new BigDecimal(-1);
+    public final static BigDecimal PI = new BigDecimal("3.14159265358979323846264338327950288419716939937510"); //50
     final static int SCALE = 30;
     final static int N = 10;
 
@@ -84,6 +85,8 @@ public class BigFunctionsPlus
      */
     public static BigDecimal cos(BigDecimal x)
     {
+        //Limits the range of x to provide more accurate trigonometric values
+        x = x.remainder(PI);
         BigDecimal sum = BigDecimal.ZERO;
         for (int i = 0; i < N; i++)
         {
@@ -102,6 +105,8 @@ public class BigFunctionsPlus
      */
     public static BigDecimal sin(BigDecimal x)
     {
+        //Limits the range of x to provide more accurate trigonometric values
+        x = x.remainder(PI);
         BigDecimal sum = BigDecimal.ZERO;
         for (int i = 0; i < N; i++)
         {
