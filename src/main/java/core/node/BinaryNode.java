@@ -32,7 +32,7 @@ public class BinaryNode extends OperatorNode
 			case MULTIPLICATION:
 				return leftVal.multiply(rightVal);
 			case DIVISION:
-				return leftVal.divide(rightVal, 30, RoundingMode.HALF_UP);
+				return BigFunctionsPlus.divide(leftVal, rightVal);
 			case EXPONENTIAL:
 				return BigFunctionsPlus.pow(leftVal, rightVal);
 			case MODULUS:
