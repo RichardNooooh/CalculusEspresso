@@ -58,9 +58,13 @@ public class BigFunctionsPlus
      *
      * @param n is the value of n
      * @return the value of n factorial
+     * @throws IllegalArgumentException if n < 0
      */
     public static BigDecimal factorial(long n)
     {
+        if (n < 0)
+            throw new IllegalArgumentException("factorial(long n) can not receive negative operators. The user " +
+                    "should implement their own Gamma function for \"negative factorial\" values");
         BigDecimal result = BigDecimal.ONE;
         while (n > 1)
         {
