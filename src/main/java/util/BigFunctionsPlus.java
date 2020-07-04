@@ -156,5 +156,43 @@ public class BigFunctionsPlus
             throw new IllegalArgumentException("The value of x is too close to an asymptote in cot().");
         return cos(x).divide(sin(x), SCALE, RoundingMode.HALF_UP);
     }
+
+    /**
+     * Compute the value of sec(x)
+     *      sec(x) = 1 / cos(x)
+     *
+     * Due to the nature of using Taylor series approximation with sec(x), involving Euler numbers and the like,
+     * the implementation of a more efficient sec(x) calculation is left up to the end user.
+     * Perhaps in a future version of this library, such a thing may be implemented.
+     * @param x is the value of x
+     * @return the value of sec(x)
+     * @throws IllegalArgumentException if the value of x is too close to an asymptote of secant(x)
+     */
+    public static BigDecimal sec(BigDecimal x)
+    {
+        x = x.remainder(PI);
+        if (x.doubleValue() == PI.divide(new BigDecimal(2)).doubleValue())
+            throw new IllegalArgumentException("The value of x is too close to an asymptote in sec().");
+        return BigDecimal.ONE.divide(cos(x), SCALE, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * Compute the value of csc(x)
+     *      csc(x) = 1 / sin(x)
+     *
+     * Due to the nature of using Taylor series approximation with csc(x), involving Euler numbers and the like,
+     * the implementation of a more efficient csc(x) calculation is left up to the end user.
+     * Perhaps in a future version of this library, such a thing may be implemented.
+     * @param x is the value of x
+     * @return the value of csc(x)
+     * @throws IllegalArgumentException if the value of x is too close to an asymptote of cosecant(x)
+     */
+    public static BigDecimal csc(BigDecimal x)
+    {
+        x = x.remainder(PI);
+        if (x.doubleValue() == 0)
+            throw new IllegalArgumentException("The value of x is too close to an asymptote in csc().");
+        return BigDecimal.ONE.divide(sin(x), SCALE, RoundingMode.HALF_UP);
+    }
 }
 
