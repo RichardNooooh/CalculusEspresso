@@ -51,5 +51,23 @@ public class BigFunctionsPlus
 
         return pow(x, BigDecimal.ONE.divide(n, SCALE, RoundingMode.HALF_UP));
     }
+
+    /**
+     * Compute the value of n!
+     *
+     * @param n is the value of n
+     * @return the value of n factorial
+     */
+    public static BigDecimal factorial(long n)
+    {
+        BigDecimal result = BigDecimal.ONE;
+        while (n > 1)
+        {
+            result = result.multiply(new BigDecimal(n));
+            n--;
+        }
+
+        return result;
+    }
 }
 
