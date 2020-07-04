@@ -53,8 +53,75 @@ public enum Operator
 			return "Logarithm";
 		}
 	},
+
+	//Trigonometric (unary) Operations
+	SIN("sin", (char) 212, OperationType.UNARY, (byte) 3, true)
+	{
+		@Override
+		public String toString()
+		{
+			return "Sine";
+		}
+	},
+	COS("cos", (char) 213, OperationType.UNARY, (byte) 3, true)
+	{
+		@Override
+		public String toString()
+		{
+			return "Cosine";
+		}
+	},
+	TAN("tan", (char) 214, OperationType.UNARY, (byte) 3, true)
+	{
+		@Override
+		public String toString()
+		{
+			return "Tangent";
+		}
+	},
+	COT("cot", (char) 215, OperationType.UNARY, (byte) 3, true)
+	{
+		@Override
+		public String toString()
+		{
+			return "Cotangent";
+		}
+	},
+	SEC("sec", (char) 216, OperationType.UNARY, (byte) 3, true)
+	{
+		@Override
+		public String toString()
+		{
+			return "Secant";
+		}
+	},
+	CSC("csc", (char) 217, OperationType.UNARY, (byte) 3, true)
+	{
+		@Override
+		public String toString()
+		{
+			return "Cosecant";
+		}
+	},
+	ARC_SIN("arcsin", (char) 218, OperationType.UNARY, (byte) 3, true)
+	{
+		@Override
+		public String toString()
+		{
+			return "Arcsine";
+		}
+	},
+	ARC_COS("arccos", (char) 219, OperationType.UNARY, (byte) 3, true)
+	{
+		@Override
+		public String toString()
+		{
+			return "Arccosine";
+		}
+	},
+
 	//Calculus Operations
-	DERIVATIVE("der", (char) 213, OperationType.CALCULUS, (byte) 4, true)
+	DERIVATIVE("der", (char) 220, OperationType.CALCULUS, (byte) 4, true)
 	{
 		@Override
 		public String toString()
@@ -62,7 +129,7 @@ public enum Operator
 			return "Derivative";
 		}
 	},
-	INTEGRAL("int", (char) 214, OperationType.CALCULUS, (byte) 4, true)
+	INTEGRAL("int", (char) 221, OperationType.CALCULUS, (byte) 4, true)
 	{
 		@Override
 		public String toString()

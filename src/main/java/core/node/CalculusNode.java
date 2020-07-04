@@ -1,6 +1,7 @@
 package core.node;
 
 import exceptions.InvalidInputException;
+import util.BigFunctionsPlus;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -66,7 +67,7 @@ public class CalculusNode extends ParameterFunctionNode
 		newEnv.put(var, atX.add(h));
 		BigDecimal adjacentVal = right.eval(newEnv);
 
-		return (adjacentVal.subtract(originalVal)).divide(h, 30, RoundingMode.HALF_UP);
+		return BigFunctionsPlus.divide(adjacentVal.subtract(originalVal), h);
 	}
 
 	/**
@@ -93,7 +94,7 @@ public class CalculusNode extends ParameterFunctionNode
 		BigDecimal b = (BigDecimal) bounds[1];
 		String var = (String) bounds[2];
 
-		int n = (b.subtract(a)).divide(h).intValue();
+		int n = BigFunctionsPlus.divide(b.subtract(a), h).intValue();
 		BigDecimal sum = BigDecimal.ZERO;
 		BigDecimal x_i = a;
 		for (int i = 0; i < n; i++)
@@ -105,7 +106,7 @@ public class CalculusNode extends ParameterFunctionNode
 				newEnv.put(str, val);
 			}
 			//(2x_i + h)/2
-			BigDecimal midPoint = h.add(x_i.multiply(new BigDecimal(2))).divide(new BigDecimal(2));
+			BigDecimal midPoint = h.add(x_i.multiply(new BigDecimal(2))).divide(BigFunctionsPlus.TWO);
 			newEnv.put(var, midPoint);
 
 			sum = sum.add(right.eval(newEnv));
