@@ -7,6 +7,7 @@ import java.math.RoundingMode;
 
 public class BigFunctionsPlus
 {
+    public final static BigDecimal NEG_ONE = new BigDecimal(-1);
     final static int SCALE = 30;
 
     /**
@@ -68,6 +69,42 @@ public class BigFunctionsPlus
         }
 
         return result;
+    }
+
+    /**
+     * Compute the value of cos(x)
+     *      cos(x) == sum( (-1)^(i+1) / (2i)! * x^(2i) )
+     * @param x is the value of x
+     * @return the value of cos(x)
+     */
+    public static BigDecimal cos(BigDecimal x)
+    {
+        BigDecimal sum = BigDecimal.ZERO;
+        for (int i = 0; i < SCALE; i++)
+        {
+            BigDecimal sign = NEG_ONE.pow(i + 1);
+            BigDecimal coefficient = sign.divide(factorial(2 * i));
+            sum = sum.add(coefficient.multiply(x.pow(2 * i)));
+        }
+        return sum;
+    }
+
+    /**
+     * Compute the value of sin(x)
+     *      sin(x) == sum( (-1)^(i) / (2i + 1)! * x^(2i + 1) )
+     * @param x is the value of x
+     * @return the value of sin(x)
+     */
+    public static BigDecimal sin(BigDecimal x)
+    {
+        BigDecimal sum = BigDecimal.ZERO;
+        for (int i = 0; i < SCALE; i++)
+        {
+            BigDecimal sign = NEG_ONE.pow(i);
+            BigDecimal coefficient = sign.divide(factorial(2 * i + 1));
+            sum = sum.add(coefficient.multiply(x.pow(2 * i + 1)));
+        }
+        return sum;
     }
 }
 
