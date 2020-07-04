@@ -8,7 +8,8 @@ import java.math.RoundingMode;
 public class BigFunctionsPlus
 {
     public final static BigDecimal NEG_ONE = new BigDecimal(-1);
-    public final static BigDecimal PI = new BigDecimal("3.14159265358979323846264338327950288419716939937510"); //50
+    public final static BigDecimal PI = new BigDecimal("3.14159265358979323846264338327950288419716939937511"); //50
+    public final static BigDecimal E = new BigDecimal("2.71828182845904523536028747135266249775724709369996"); //50
     final static int SCALE = 30;
     final static int N = 10;
 
