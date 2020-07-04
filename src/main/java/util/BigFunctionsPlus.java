@@ -12,7 +12,7 @@ public class BigFunctionsPlus
     public final static BigDecimal TAU = new BigDecimal("6.28318530717958647692528676655900576839433879875021"); //50
     public final static BigDecimal E = new BigDecimal("2.71828182845904523536028747135266249775724709369996"); //50
     final static int SCALE = 30;
-    final static int N = 10;
+    final static int N = 10; //TODO change this into "accurate digits" using error approximation
 
     /**
      * Compute the value x^y
@@ -117,6 +117,42 @@ public class BigFunctionsPlus
             sum = sum.add(coefficient.multiply(x.pow(2 * i + 1)));
         }
         return sum;
+    }
+
+    /**
+     * Compute the value of tan(x)
+     *      tan(x) = sin(x) / cos(x)
+     *
+     * Due to the nature of using Taylor series approximation with tan(x), involving Bernoulli numbers and the like,
+     * the implementation of a more efficient tan(x) calculation is left up to the end user.
+     * Perhaps in a future version of this library, such a thing may be implemented.
+     * @param x is the value of x
+     * @return the value of tan(x)
+     */
+    public static BigDecimal tan(BigDecimal x)
+    {
+        x = x.remainder(PI);
+        if (x.doubleValue() == PI.divide(new BigDecimal(2)).doubleValue())
+            throw new IllegalArgumentException("The value of x is too close to an asymptote in tan().");
+        return sin(x).divide(cos(x), SCALE, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * Compute the value of cot(x)
+     *      cot(x) = cos(x) / sin(x)
+     *
+     * Due to the nature of using Taylor series approximation with cot(x), involving Bernoulli numbers and the like,
+     * the implementation of a more efficient cot(x) calculation is left up to the end user.
+     * Perhaps in a future version of this library, such a thing may be implemented.
+     * @param x is the value of x
+     * @return the value of cot(x)
+     */
+    public static BigDecimal cot(BigDecimal x)
+    {
+        x = x.remainder(PI);
+        if (x.doubleValue() == 0)
+            throw new IllegalArgumentException("The value of x is too close to an asymptote in cot().");
+        return cos(x).divide(sin(x), SCALE, RoundingMode.HALF_UP);
     }
 }
 
