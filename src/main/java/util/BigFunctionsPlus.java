@@ -8,11 +8,16 @@ import java.math.RoundingMode;
 public class BigFunctionsPlus
 {
     public final static BigDecimal NEG_ONE = new BigDecimal(-1);
+    public final static BigDecimal TWO = new BigDecimal(2);
+
     public final static BigDecimal PI = new BigDecimal("3.14159265358979323846264338327950288419716939937511"); //50
+    public final static BigDecimal PI_HALVES = PI.divide(TWO);
     public final static BigDecimal TAU = new BigDecimal("6.28318530717958647692528676655900576839433879875021"); //50
     public final static BigDecimal E = new BigDecimal("2.71828182845904523536028747135266249775724709369996"); //50
+
     final static int SCALE = 30;
     final static int N = 10; //TODO change this into "accurate digits" using error approximation
+    final static BigDecimal ASYMPTOTE_LIMIT = new BigDecimal(0.0000000000001);
 
     /**
      * Compute the value x^y
@@ -23,7 +28,7 @@ public class BigFunctionsPlus
      */
     public static BigDecimal pow(BigDecimal x, BigDecimal y)
     {
-        if (x.doubleValue() == 0)
+        if (x.abs().compareTo(ASYMPTOTE_LIMIT) < 0)
             return BigDecimal.ZERO;
         return BigFunctions.exp(BigFunctions.ln(x, SCALE).multiply(y), SCALE);
     }
@@ -37,7 +42,7 @@ public class BigFunctionsPlus
      */
     public static BigDecimal log(BigDecimal x, BigDecimal n)
     {
-        if (x.doubleValue() == 0 || n.doubleValue() == 0)
+        if (x.compareTo(ASYMPTOTE_LIMIT) < 0 || n.compareTo(ASYMPTOTE_LIMIT) < 0)
             throw new IllegalArgumentException("The log() method cannot have a non-positive base or x");
         return BigFunctions.ln(x, SCALE).divide(BigFunctions.ln(n, SCALE), SCALE, RoundingMode.HALF_UP);
     }
@@ -51,8 +56,9 @@ public class BigFunctionsPlus
      */
     public static BigDecimal root(BigDecimal x, BigDecimal n)
     {
-        if (n.doubleValue() == 0)
-            throw new IllegalArgumentException("The root() method cannot have a 0 as its index.");
+        if (x.compareTo(ASYMPTOTE_LIMIT) < 0 || n.compareTo(ASYMPTOTE_LIMIT) < 0)
+            throw new IllegalArgumentException("The root() method cannot have a 0 as its index, nor can it have" +
+                    " a negative radicand.");
 
         return pow(x, BigDecimal.ONE.divide(n, SCALE, RoundingMode.HALF_UP));
     }
@@ -133,7 +139,7 @@ public class BigFunctionsPlus
     public static BigDecimal tan(BigDecimal x)
     {
         x = x.remainder(PI);
-        if (x.doubleValue() == PI.divide(new BigDecimal(2)).doubleValue())
+        if (x.subtract(PI_HALVES).abs().compareTo(ASYMPTOTE_LIMIT) < 0)
             throw new IllegalArgumentException("The value of x is too close to an asymptote in tan().");
         return sin(x).divide(cos(x), SCALE, RoundingMode.HALF_UP);
     }
@@ -152,7 +158,7 @@ public class BigFunctionsPlus
     public static BigDecimal cot(BigDecimal x)
     {
         x = x.remainder(PI);
-        if (x.doubleValue() == 0)
+        if (x.subtract(BigDecimal.ZERO).abs().compareTo(ASYMPTOTE_LIMIT) < 0)
             throw new IllegalArgumentException("The value of x is too close to an asymptote in cot().");
         return cos(x).divide(sin(x), SCALE, RoundingMode.HALF_UP);
     }
@@ -171,7 +177,7 @@ public class BigFunctionsPlus
     public static BigDecimal sec(BigDecimal x)
     {
         x = x.remainder(PI);
-        if (x.doubleValue() == PI.divide(new BigDecimal(2)).doubleValue())
+        if (x.subtract(PI_HALVES).abs().compareTo(ASYMPTOTE_LIMIT) < 0)
             throw new IllegalArgumentException("The value of x is too close to an asymptote in sec().");
         return BigDecimal.ONE.divide(cos(x), SCALE, RoundingMode.HALF_UP);
     }
@@ -190,7 +196,7 @@ public class BigFunctionsPlus
     public static BigDecimal csc(BigDecimal x)
     {
         x = x.remainder(PI);
-        if (x.doubleValue() == 0)
+        if (x.subtract(BigDecimal.ZERO).abs().compareTo(ASYMPTOTE_LIMIT) < 0)
             throw new IllegalArgumentException("The value of x is too close to an asymptote in csc().");
         return BigDecimal.ONE.divide(sin(x), SCALE, RoundingMode.HALF_UP);
     }
