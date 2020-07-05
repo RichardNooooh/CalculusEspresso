@@ -8,15 +8,18 @@ import java.math.RoundingMode;
 
 public class BigFunctionsPlus
 {
+    //Common numbers
     public final static BigDecimal NEG_ONE = new BigDecimal(-1);
     public final static BigDecimal TWO = new BigDecimal(2);
 
+    //Transcendental numbers (and their scaled variants)
     public final static BigDecimal PI = new BigDecimal("3.14159265358979323846264338327950288419716939937511"); //50
     public final static BigDecimal PI_HALVES = PI.divide(TWO);
     public final static BigDecimal THREE_PI_HALVES = new BigDecimal(3).multiply(PI_HALVES);
     public final static BigDecimal TAU = new BigDecimal("6.28318530717958647692528676655900576839433879875021"); //50
     public final static BigDecimal E = new BigDecimal("2.71828182845904523536028747135266249775724709369996"); //50
 
+    //Precision parameters
     final static int SCALE = 30;
     final static int N = 10; //TODO change this into "accurate digits" using error approximation
     final static BigDecimal ASYMPTOTE_LIMIT = new BigDecimal(0.0000000000001);
