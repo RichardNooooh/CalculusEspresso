@@ -138,8 +138,13 @@ variables or not.
 
 ###Advanced Use
 I am planning to implement a way for you to create an expression tree manually, as that can
-be significantly more efficient for certain use cases. For the time being, you will have to settle
-with this for now.
+be significantly more efficient for certain use cases. For the time being, you can implement
+your own parser and tree based on the nodes that I have provided.
+
+My documentation on some of these files are not the most clear, nor fully fleshed out for now.
+
+I would like to apologize ahead of time for my trashy parser code. There are some hastily made
+solutions here and there, and I will get to cleaning that at  some point in the future.
 
 ##Other Notes
 I built this library on Java 13, however, it should work with lower versions of Java, 
