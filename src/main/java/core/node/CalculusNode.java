@@ -14,9 +14,21 @@ import java.util.Map;
 public class CalculusNode extends ParameterFunctionNode
 {
 	/**
-	 * 'h' is the del-x value of the calculus operations
+	 * 'h' is the del-x value for derivative operations
+	 *
+	 * The smaller the value, the more accurate the derivative.
+	 * The performance of the derivative is not affected a lot by this value.
 	 */
-	private static final BigDecimal h = new BigDecimal("0.001");
+	private static final BigDecimal h = new BigDecimal("0.000000001");
+
+	/**
+	 * 'del_x' is the value of integral operations
+	 *
+	 * The smaller the value, the more accurate the integral, but
+	 * the performance of the integral is severely affected by this value.
+	 */
+	private static final BigDecimal del_x = new BigDecimal("0.0001");
+
 
 	/**
 	 * Calculus node.Node Constructor
@@ -94,7 +106,7 @@ public class CalculusNode extends ParameterFunctionNode
 		BigDecimal b = (BigDecimal) bounds[1];
 		String var = (String) bounds[2];
 
-		int n = BigFunctionsPlus.divide(b.subtract(a), h).intValue();
+		int n = BigFunctionsPlus.divide(b.subtract(a), del_x).intValue();
 		BigDecimal sum = BigDecimal.ZERO;
 		BigDecimal x_i = a;
 		for (int i = 0; i < n; i++)
@@ -106,14 +118,14 @@ public class CalculusNode extends ParameterFunctionNode
 				newEnv.put(str, val);
 			}
 			//(2x_i + h)/2
-			BigDecimal midPoint = h.add(x_i.multiply(new BigDecimal(2))).divide(BigFunctionsPlus.TWO);
+			BigDecimal midPoint = del_x.add(x_i.multiply(new BigDecimal(2))).divide(BigFunctionsPlus.TWO);
 			newEnv.put(var, midPoint);
 
 			sum = sum.add(right.eval(newEnv));
-			x_i = x_i.add(h);
+			x_i = x_i.add(del_x);
 		}
 
-		return sum.multiply(h);
+		return sum.multiply(del_x);
 	}
 
 	/**
