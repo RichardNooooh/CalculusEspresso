@@ -3,10 +3,7 @@ import core.*;
 import core.node.*;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * This is the primary calculator tree
@@ -101,7 +98,7 @@ final public class CalculusEspresso
 	 * @param variableMap is a map containing the variables and their corresponding BigDecimal values
 	 * @return the value of the expression at the given variable values, if applicable
 	 */
-	public double evaluate(HashMap<String, BigDecimal> variableMap)
+	public double evaluate(Map<String, BigDecimal> variableMap)
 	{
 		BigDecimal value = root.eval(variableMap);
 		return value.doubleValue();
