@@ -528,7 +528,7 @@ public class ExpressionParser
 
 		/**
 		 * Should not be called!
-		 * A ParenthesisNode should not exist in the ExpressionTree
+		 * A ParenthesisNode should not exist in the CalculusEspresso
 		 */
 		@Override
 		public BigDecimal eval(Map<String, BigDecimal> env)

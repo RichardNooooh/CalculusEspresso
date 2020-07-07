@@ -11,16 +11,16 @@ import java.util.Stack;
 /**
  * This is the primary calculator tree
  */
-final public class ExpressionTree
+final public class CalculusEspresso
 {
 	Node root;
 	ExpressionParser parser;
 
 	/**
-	 * Constructs a new ExpressionTree object
+	 * Constructs a new CalculusEspresso object
 	 * @param expression is the String to build the expression tree
 	 */
-	public ExpressionTree(String expression)
+	public CalculusEspresso(String expression)
 	{
 		//TODO isPostfix boolean assumed to be true for now.
 		parser = new ExpressionParser(expression, true);
