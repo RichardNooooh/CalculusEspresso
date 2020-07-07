@@ -23,6 +23,7 @@ method can be called.
     CalculusEspresso c = new CalculusEspresso(expression);
     System.out.println(c.evaluate()); // 16.0
 ```
+####Variables
 You can also use variables within your expression, using any non-reserved characters
 in ASCII (possible UNICODE, haven't tested). The reserved characters can be found in
 Operator.java within the core.node package. **The alphabetical characters are currently
@@ -33,6 +34,7 @@ for the transcendental constants in the near future.**
     CalculusEspresso c = new CalculusEspresso(expression);
     System.out.println(c.evaluate()); // 21.0
 ```
+####Implicit Multiplication
 Implicit multiplication works in the following situations:
 ```$xslt
     //number, variable
@@ -63,6 +65,7 @@ Implicit multiplication works in the following situations:
     String var_func = "xln(5) ~~ x=3";
     System.out.println((new CalculusEspresso(var_func)).evaluate()); // 4.8283137372
 ```
+####Simple Functions
 As you can see in the examples above, you can also use various functions (full list in the
 features list above).
 Most of the functions can simply be used by typing them out with the parentheses:
@@ -73,6 +76,7 @@ Most of the functions can simply be used by typing them out with the parentheses
     String sin_func = "sin(3)";
     System.out.println((new CalculusEspresso(sin_func)).evaluate()); // 0.14112000785871504
 ```
+####"Parameter" Functions
 A few functions, such as the root and logarithm functions, require additional information
 to compute their values.
 ```$xslt
@@ -83,6 +87,8 @@ to compute their values.
     System.out.println((new CalculusEspresso(root_func)).evaluate()); // 2.6207413942088964
 ```
 These functions simply require that additional input to be placed within '[ ]'.
+
+####Calculus Functions
 The two calculus operators have similar input:
 ```$xslt
     String derivative_func = "der[x = 12](x^3)";
@@ -101,6 +107,7 @@ compute multi-variable computations at your own risk. **Please be sure to post y
 issues if you find any!**
 
 ###Repetitive Computations
+
 
 ###Advanced Use
 
