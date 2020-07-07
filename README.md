@@ -1,5 +1,4 @@
 # CalculusEspresso
-
 A non-CAS, Java calculus library for computing mathematical expressions. 
 
 ##Features
@@ -107,13 +106,44 @@ compute multi-variable computations at your own risk. **Please be sure to post y
 issues if you find any!**
 
 ###Repetitive Computations
+####Variables
+As you may have noticed in the startup portion, if you want to repeatedly compute your 
+expression at different variable values, you would need to create a new CalculusEspresso 
+object every time.
 
+As this is laughably inefficient, CalculusEspresso provides an alternative method to evaluate
+your expressions:
+```$xslt
+    String expression = "2x + 1";
+    CalculusEspresso c = new CalculusEspresso(expression);
+```
+If you attempted to use the 'evaluate()' method with this code, it would throw a
+MissingInputExpression. However, you can instead use the overridden 'evaluate(Map m)' method:
+```$xslt
+    String expression = "2x + 1";
+    CalculusEspresso c = new CalculusEspresso(expression);
+    HashMap variableMap = new HashMap();
+    variable.put("x", new BigDecimal(3));
+
+    System.out.println(c.evaluate(variableMap)); 
+```
+The variable map utilizes String keys* and BigDecimal values. The CalculusEspresso object
+contains the expression tree within itself, and requires the user to input different values.
+Also, it does not have to be a HashMap. Any Map object will work, just the HashMap is the most
+efficient for this.
+
+*It is strange the variable map requires a String when the only valid variables are
+single characters, I know that. I haven't decided if I want to add a way to have multi-character
+variables or not.
 
 ###Advanced Use
+I am planning to implement a way for you to create an expression tree manually, as that can
+be significantly more efficient for certain use cases. For the time being, you will have to settle
+with this for now.
 
 ##Other Notes
 I built this library on Java 13, however, it should work with lower versions of Java, 
-down to Java 1.8. Perhaps in the near future, I'll downgrade this library down to 1.8. 
+down to Java 1.8. In the near future, I'll downgrade this library down to 1.8. 
 
 ##Future Features
 - Transcendental constants in expression
