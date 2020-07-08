@@ -1,4 +1,6 @@
+//This line is the only thing changed to this class.
 package org.ideaman.calculus_espresso.util.tareknaj;
+
 /*Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
