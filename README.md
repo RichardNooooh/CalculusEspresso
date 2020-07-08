@@ -1,7 +1,7 @@
 # CalculusEspresso
 A non-CAS, Java calculus library for computing mathematical expressions. 
 
-##Features
+## Features
 - Multi-variable derivatives and integrals
 - Trigonometric functions
     - sine, cosine, tangent
@@ -10,10 +10,10 @@ A non-CAS, Java calculus library for computing mathematical expressions.
 - nth-root and nth-logarithm operators
 - Implicit multiplication
 
-##How To Use
+## How To Use
 Import the CalculusEspresso.java class into your code. {TODO describe how to do this}
 
-###Quick Start (General Use)
+### Quick Start (General Use)
 The CalculusEspresso class accepts a String which represents your expression (in
 standard infix notation). Upon the creation of CalculusEspresso, the *evaluate()* 
 method can be called.
@@ -22,7 +22,7 @@ method can be called.
     CalculusEspresso c = new CalculusEspresso(expression);
     System.out.println(c.evaluate()); // 16.0
 ```
-####Variables
+#### Variables
 You can also use variables within your expression, using any non-reserved characters
 in ASCII (possible UNICODE, haven't tested). The reserved characters can be found in
 Operator.java within the core.node package. **The alphabetical characters are currently
@@ -33,7 +33,7 @@ for the transcendental constants in the near future.**
     CalculusEspresso c = new CalculusEspresso(expression);
     System.out.println(c.evaluate()); // 21.0
 ```
-####Implicit Multiplication
+#### Implicit Multiplication
 Implicit multiplication works in the following situations:
 ```$xslt
     //number, variable
@@ -64,7 +64,7 @@ Implicit multiplication works in the following situations:
     String var_func = "xln(5) ~~ x=3";
     System.out.println((new CalculusEspresso(var_func)).evaluate()); // 4.8283137372
 ```
-####Simple Functions
+#### Simple Functions
 As you can see in the examples above, you can also use various functions (full list in the
 features list above).
 Most of the functions can simply be used by typing them out with the parentheses:
@@ -75,7 +75,7 @@ Most of the functions can simply be used by typing them out with the parentheses
     String sin_func = "sin(3)";
     System.out.println((new CalculusEspresso(sin_func)).evaluate()); // 0.14112000785871504
 ```
-####"Parameter" Functions
+#### "Parameter" Functions
 A few functions, such as the root and logarithm functions, require additional information
 to compute their values.
 ```$xslt
@@ -87,7 +87,7 @@ to compute their values.
 ```
 These functions simply require that additional input to be placed within '[ ]'.
 
-####Calculus Functions
+#### Calculus Functions
 The two calculus operators have similar input:
 ```$xslt
     String derivative_func = "der[x = 12](x^3)";
@@ -105,8 +105,8 @@ can be nested within each other. Keep in mind this has not been tested extensive
 compute multi-variable computations at your own risk. **Please be sure to post your errors in
 issues if you find any!**
 
-###Repetitive Computations
-####Variables
+### Repetitive Computations
+#### Variables
 As you may have noticed in the startup portion, if you want to repeatedly compute your 
 expression at different variable values, you would need to create a new CalculusEspresso 
 object every time.
@@ -136,7 +136,7 @@ efficient for this.
 single characters, I know that. I haven't decided if I want to add a way to have multi-character
 variables or not.
 
-###Advanced Use
+### Advanced Use
 I am planning to implement a way for you to create an expression tree manually, as that can
 be significantly more efficient for certain use cases. For the time being, you can implement
 your own parser and tree based on the nodes that I have provided.
@@ -146,11 +146,11 @@ My documentation on some of these files are not the most clear, nor fully fleshe
 I would like to apologize ahead of time for my trashy parser code. There are some hastily made
 solutions here and there, and I will get to cleaning that at  some point in the future.
 
-##Other Notes
+## Other Notes
 I built this library on Java 13, however, it should work with lower versions of Java, 
 down to Java 1.8. In the near future, I'll downgrade this library down to 1.8. 
 
-##Future Features
+## Future Features
 - Transcendental constants in expression
     - PI
     - E
