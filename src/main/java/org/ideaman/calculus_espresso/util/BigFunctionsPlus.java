@@ -1,6 +1,6 @@
-package util;
+package org.ideaman.calculus_espresso.util;
 
-import util.tareknaj.BigFunctions;
+import org.ideaman.calculus_espresso.util.tareknaj.BigFunctions;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

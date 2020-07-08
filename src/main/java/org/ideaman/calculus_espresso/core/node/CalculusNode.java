@@ -1,10 +1,9 @@
-package core.node;
+package org.ideaman.calculus_espresso.core.node;
 
-import exceptions.InvalidInputException;
-import util.BigFunctionsPlus;
+import org.ideaman.calculus_espresso.exceptions.InvalidInputException;
+import org.ideaman.calculus_espresso.util.BigFunctionsPlus;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 

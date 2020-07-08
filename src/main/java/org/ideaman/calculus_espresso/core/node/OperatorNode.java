@@ -1,4 +1,4 @@
-package core.node;
+package org.ideaman.calculus_espresso.core.node;
 
 /**
  * Represents all operations in the expression tree

@@ -1,12 +1,12 @@
-package core;
+package org.ideaman.calculus_espresso.core;
 
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import core.node.*;
-import exceptions.MissingInputException;
-import util.ExpressionChar;
+import org.ideaman.calculus_espresso.core.node.*;
+import org.ideaman.calculus_espresso.exceptions.MissingInputException;
+import org.ideaman.calculus_espresso.util.ExpressionChar;
 
 /**
  * Parses a raw expression into tokens

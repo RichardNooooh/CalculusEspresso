@@ -1,4 +1,4 @@
-package exceptions;
+package org.ideaman.calculus_espresso.exceptions;
 
 public class UndefinedVariableException extends RuntimeException
 {
