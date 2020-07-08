@@ -1,4 +1,4 @@
-package core.node;
+package org.ideaman.calculus_espresso.core.node;
 
 import java.math.BigDecimal;
 import java.util.Map;

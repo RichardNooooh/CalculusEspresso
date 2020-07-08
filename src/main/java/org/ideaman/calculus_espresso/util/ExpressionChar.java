@@ -1,4 +1,4 @@
-package util;
+package org.ideaman.calculus_espresso.util;
 
 /**
  * Stores the ASCII characters for all important values

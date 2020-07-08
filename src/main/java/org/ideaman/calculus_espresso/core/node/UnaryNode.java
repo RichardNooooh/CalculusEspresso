@@ -1,7 +1,7 @@
-package core.node;
+package org.ideaman.calculus_espresso.core.node;
 
-import util.BigFunctionsPlus;
-import util.tareknaj.BigFunctions;
+import org.ideaman.calculus_espresso.util.BigFunctionsPlus;
+import org.ideaman.calculus_espresso.util.tareknaj.BigFunctions;
 
 import java.math.BigDecimal;
 import java.math.MathContext;

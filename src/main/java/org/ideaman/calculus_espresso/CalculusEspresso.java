@@ -1,6 +1,7 @@
+package org.ideaman.calculus_espresso;
 
-import core.*;
-import core.node.*;
+import org.ideaman.calculus_espresso.core.*;
+import org.ideaman.calculus_espresso.core.node.*;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -85,7 +86,7 @@ final public class CalculusEspresso
 	/**
 	 * Evaluate the expression based on initial values
 	 * @return the value of the expression at the initial variable values, if applicable
-	 * @throws exceptions.UndefinedVariableException if the map is empty and needs those variables
+	 * @throws org.ideaman.calculus_espresso.exceptions.UndefinedVariableException if the map is empty and needs those variables
 	 */
 	public double evaluate()
 	{

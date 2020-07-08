@@ -1,6 +1,6 @@
-package core.node;
+package org.ideaman.calculus_espresso.core.node;
 
-import exceptions.UndefinedVariableException;
+import org.ideaman.calculus_espresso.exceptions.UndefinedVariableException;
 
 import java.math.BigDecimal;
 import java.util.Map;

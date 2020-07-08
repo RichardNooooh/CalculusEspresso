@@ -1,11 +1,10 @@
-package core.node;
+package org.ideaman.calculus_espresso.core.node;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.Map;
 
-import util.BigFunctionsPlus;
+import org.ideaman.calculus_espresso.util.BigFunctionsPlus;
 
 /**
  * Supports all binary operations within the expression tree
