@@ -360,8 +360,7 @@ public class ExpressionParser
 				if (thisNode instanceof NumNode)
 				{
 					Node nextNode = tokensList.get(i + 1);
-					if (nextNode instanceof VarNode || nextNode instanceof UnaryNode //TODO consider having Unary/Calculus Nodes extend some FunctionNode
-													|| nextNode instanceof CalculusNode
+					if (nextNode instanceof VarNode || nextNode instanceof FunctionNode
 													|| (nextNode instanceof ParenthesisNode && ((ParenthesisNode)nextNode).isLeftParenthesis()))
 					{
 						resultList.add(new BinaryNode(Operator.MULTIPLICATION));
@@ -370,8 +369,7 @@ public class ExpressionParser
 				else if (thisNode instanceof VarNode)
 				{
 					Node nextNode = tokensList.get(i + 1);
-					if (nextNode instanceof OperandNode || nextNode instanceof UnaryNode
-														|| nextNode instanceof CalculusNode
+					if (nextNode instanceof OperandNode || nextNode instanceof FunctionNode
 														|| (nextNode instanceof ParenthesisNode && ((ParenthesisNode)nextNode).isLeftParenthesis()))
 					{
 						resultList.add(new BinaryNode(Operator.MULTIPLICATION));
@@ -528,7 +526,7 @@ public class ExpressionParser
 
 		/**
 		 * Should not be called!
-		 * A ParenthesisNode should not exist in the ExpressionTree
+		 * A ParenthesisNode should not exist in the CalculusEspresso
 		 */
 		@Override
 		public BigDecimal eval(Map<String, BigDecimal> env)
