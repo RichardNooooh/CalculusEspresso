@@ -11,7 +11,11 @@ A non-CAS, Java calculus library for computing mathematical expressions.
 - Implicit multiplication
 
 ## How To Use
-Import the CalculusEspresso.java class into your code. {TODO describe how to do this}
+Download the latest package.
+Import this library into your IDE using
+```dtd
+    import org.ideaman.calculus_espresso.CalculusEspresso;
+```
 
 ### Quick Start (General Use)
 The CalculusEspresso class accepts a String which represents your expression (in
@@ -145,10 +149,6 @@ My documentation on some of these files are not the most clear, nor fully fleshe
 
 I would like to apologize ahead of time for my trashy parser code. There are some hastily made
 solutions here and there, and I will get to cleaning that at  some point in the future.
-
-## Other Notes
-I built this library on Java 13, however, it should work with lower versions of Java, 
-down to Java 1.8. In the near future, I'll downgrade this library down to 1.8. 
 
 ## Future Features
 - Transcendental constants in expression
