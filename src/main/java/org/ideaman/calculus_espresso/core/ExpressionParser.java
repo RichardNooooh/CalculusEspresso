@@ -201,7 +201,7 @@ public class ExpressionParser
 			while (i < EXPRESSION_LENGTH && expressionCharArray[i] != ']')
 				calculusInputArray[indexInCalculusInput++] = expressionCharArray[i++];
 
-			String parameterInputString = new String(calculusInputArray).strip();
+			String parameterInputString = new String(calculusInputArray).trim();
 			switch(op)
 			{
 				case LOGARITHM:
@@ -531,7 +531,7 @@ public class ExpressionParser
 		@Override
 		public BigDecimal eval(Map<String, BigDecimal> env)
 		{
-			throw new IllegalCallerException("ParenthesisNode's eval() method should not be called.");
+			throw new IllegalStateException("ParenthesisNode's eval() method should not be called.");
 		}
 	}
 

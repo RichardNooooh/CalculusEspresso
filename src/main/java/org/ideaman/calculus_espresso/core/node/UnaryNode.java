@@ -27,7 +27,7 @@ public class UnaryNode extends FunctionNode
 		switch(operator)
 		{
 			case SQUARE_ROOT:
-				return val.sqrt(new MathContext(SCALE));
+				return BigFunctions.sqrt(val, SCALE);
 			case NATURAL_LOGARITHM:
 				return BigFunctions.ln(val, SCALE);
 			case NEGATIVE:
