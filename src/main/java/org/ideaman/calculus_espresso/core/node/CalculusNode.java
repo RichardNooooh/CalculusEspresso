@@ -87,8 +87,8 @@ public class CalculusNode extends ParameterFunctionNode
 	private String parseDerivativePoint(Map<String, BigDecimal> env)
 	{
 		String[] variableValuePair = params.split("=");
-		String variable = variableValuePair[0].strip();
-		BigDecimal value = BigDecimal.valueOf(Double.parseDouble(variableValuePair[1].strip()));
+		String variable = variableValuePair[0].trim();
+		BigDecimal value = BigDecimal.valueOf(Double.parseDouble(variableValuePair[1].trim()));
 		env.put(variable, value);
 
 		return variable;
@@ -137,9 +137,9 @@ public class CalculusNode extends ParameterFunctionNode
 		Object[] parameters = new Object[3];
 		try
 		{
-			String a = rawString[0].strip();
-			String b = rawString[1].strip();
-			String var = rawString[2].strip();
+			String a = rawString[0].trim();
+			String b = rawString[1].trim();
+			String var = rawString[2].trim();
 			parameters[0] = new BigDecimal(a);
 			parameters[1] = new BigDecimal(b);
 			parameters[2] = var;

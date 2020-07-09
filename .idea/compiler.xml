@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="CalculusEspresso" target="11" />
+      <module name="CalculusEspresso" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -13,7 +13,7 @@ public class ParameterFunctionNode extends FunctionNode
     public ParameterFunctionNode(Operator op, String parameters)
     {
         this.operator = op;
-        this.params = parameters.strip();
+        this.params = parameters.trim();
     }
 
     @Override
